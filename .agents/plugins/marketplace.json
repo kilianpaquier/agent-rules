@@ -1,0 +1,20 @@
+{
+  "name": "agent-rules",
+  "interface": {
+    "displayName": "agent-rules"
+  },
+  "plugins": [
+    {
+      "name": "agent-rules",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "instructions"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "agent-rules",
+  "owner": {
+    "name": "Kilian PAQUIER",
+    "url": "https://kilianpaquier.dev"
+  },
+  "plugins": [
+    {
+      "name": "agent-rules",
+      "source": "./"
+    }
+  ]
+}

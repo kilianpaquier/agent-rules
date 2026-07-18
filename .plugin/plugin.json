@@ -1,0 +1,9 @@
+{
+    "name": "kilianpaquier-rules",
+    "description": "Kilian PAQUIER's personal global AI agent behavior rules and per-language coding conventions, shipped as instructions / rules",
+    "version": "0.1.0",
+    "license": "MIT",
+
+    "repository": "https://gitlab.com/kilianpaquier/ai-integration",
+    "homepage": "https://gitlab.com/kilianpaquier/ai-integration/-/tree/main/plugins/rules/kilianpaquier-rules"
+}

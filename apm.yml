@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=https://microsoft.github.io/apm/specs/schemas/manifest-v0.1.schema.json
+
+name: agent-rules
+version: 0.1.0
+type: instructions
+
+author: Kilian PAQUIER
+description: My own personal global AI agent behavior rules and per-language coding conventions, shipped as an Open Plugin, Agent Package Manager package, and marketplace
+license: MIT
+
+marketplace:
+  outputs:
+    claude: {}
+    codex: {}
+
+  owner:
+    name: Kilian PAQUIER
+    url: https://kilianpaquier.dev
+
+  packages:
+    - category: instructions
+      name: agent-rules
+      source: ./
