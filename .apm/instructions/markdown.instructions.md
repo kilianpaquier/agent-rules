@@ -42,4 +42,4 @@ Example:
 ## Links
 
 - Inline links: `[text](url)`.
-- No bare URLs in prose - wrap them in angle brackets (`<url>`) or use inline link syntax.
+- No bare URLs in prose. Wrap them in angle brackets (`<url>`) or use inline link syntax.

@@ -54,7 +54,7 @@ Order job keys (omit unneeded):
 
 - Names: `kebab-case`. Use `:` as namespace separator (e.g., `semantic-release:dry-run`).
 - Set `needs: []` for jobs must run immediately, no waiting prior stages.
-- Set `interruptible: true` globally via `default:` block; override `interruptible: false` for release jobs.
+- Set `interruptible: true` globally via `default:` block. Override `interruptible: false` for release jobs.
 
 ## Variables
 
@@ -63,7 +63,7 @@ Order job keys (omit unneeded):
 ## Rules
 
 - Use `rules:` with `if/when` pairs. Prefer `rules:` over `only:/except:`.
-- Prefer conditions with explicit `when: never` to block cases; end with `when: on_success` as fallback:
+- Prefer conditions with explicit `when: never` to block cases. End with `when: on_success` as fallback:
 
 ```yaml
 rules:

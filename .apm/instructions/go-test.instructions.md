@@ -12,21 +12,21 @@ paths: ["**/*_test.go"]
 
 - Always use external test package: `package foo_test`.
 - Use `package foo` only when project already does so (check existing test files first).
-- Directory has both styles → match file being extended; new standalone test files default `package foo_test`.
+- Directory has both styles → match file being extended. New standalone test files default `package foo_test`.
 
 ## Structure
 
 - Use `t.Run("description", func(t *testing.T) { ... })` subtests each test case.
 - No table-driven tests (struct slice + range) unless explicit ask.
-- Use `t.Cleanup(fn)` teardown, state restore; prefer over `defer` in subtests.
-- Use `t.TempDir()` file I/O - cleaned up auto.
+- Use `t.Cleanup(fn)` teardown, state restore. Prefer over `defer` in subtests.
+- Use `t.TempDir()` file I/O (cleaned up auto).
 - Mark test helpers `t.Helper()` first statement.
 
 ## Assertions
 
 - Match project's existing test library.
 - No library present → stdlib `testing` only.
-- Use `require.` (or equivalent fail-fast assertions) preconditions; `assert.` actual assertions.
+- Use `require.` (or equivalent fail-fast assertions) for preconditions, `assert.` for actual assertions.
 
 ## Stdlib example
 

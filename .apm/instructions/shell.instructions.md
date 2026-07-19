@@ -27,8 +27,8 @@ set -e
 
 ## Style
 
-- Early exit function: `return <code>`; early exit script: `exit <code>`. Non-zero codes signal failure.
+- Early exit function: `return <code>`. Early exit script: `exit <code>`. Non-zero codes signal failure.
 - Function names: `snake_case()`. No `function` keyword.
-- Run shellcheck every script; fix all warnings before finish.
+- Run shellcheck every script. Fix all warnings before finish.
 - Quote variables when shellcheck require.
 - Suppress warning only targeted directive: `# shellcheck disable=SCxxxx`. Never bare `# shellcheck disable`.

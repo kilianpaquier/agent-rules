@@ -10,7 +10,7 @@ paths: ["**/{docker-compose,compose}.{yml,yaml}", "**/{docker-compose,compose}.*
 
 ## File
 
-- Prefer `docker-compose.yml` as filename; `compose.yml` also fine.
+- Prefer `docker-compose.yml` as filename. `compose.yml` also fine.
 - Skip `version:` field (removed Compose v2).
 
 ## Services
@@ -48,12 +48,15 @@ environment:
 ## depends_on
 
 - Define `healthcheck:` block on service when it lacks native `HEALTHCHECK` instruction but dependent service needs `condition: service_healthy`.
-- Use `condition: service_healthy` when service has health check (native or compose-level); fall back `condition: service_started` otherwise:
+- Use `condition: service_healthy` when service has health check (native or compose-level). Fall back `condition: service_started` otherwise.
+- Use `condition: service_completed_successfully` when depending on a one-shot/job container (migration, seed, init job) that must exit successfully before dependent starts:
 
 ```yaml
 depends_on:
   db:
     condition: service_healthy
+  migrate:
+    condition: service_completed_successfully
 ```
 
 ## Volumes

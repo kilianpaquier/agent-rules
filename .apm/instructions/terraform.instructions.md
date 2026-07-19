@@ -11,7 +11,7 @@ paths: ["**/*.tf", "**/*.tofu", "**/*.tfvars"]
 ## Module file layout
 
 Standard files per module: `versions.tf`, `providers.tf`, `variables.tf`, `main.tf`, `outputs.tf`.
-Add `data_and_locals.tf` (not `locals.tf`) only when many data sources or locals - else keep in `main.tf`.
+Add `data_and_locals.tf` (not `locals.tf`) only when many data sources or locals, else keep in `main.tf`.
 Add `imports.tf` for Terraform import blocks.
 
 ## Naming

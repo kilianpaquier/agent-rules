@@ -25,7 +25,7 @@ func FunctionName(input string) (string, error) { ... }
 type TypeName struct { ... }
 ```
 
-Multiline (when extra context needed - separate paragraphs with `//`):
+Multiline (when extra context needed, separate paragraphs with `//`):
 
 ```go
 // FunctionName does something with input and returns result.
@@ -83,8 +83,8 @@ package mypkg
 ## Optimizations
 
 - Pre-allocate slices/maps when final size known: `make([]T, 0, n)` and `make(map[K]V, n)`.
-- Size unknown before loop → declare without capacity (`var s []T`); add `//nolint:prealloc` only when golangci-lint flags it.
-- Use `strings.Builder` or `bytes.Buffer` assemble strings; never concat `+` inside loop.
+- Size unknown before loop → declare without capacity (`var s []T`). Add `//nolint:prealloc` only when golangci-lint flags it.
+- Use `strings.Builder` or `bytes.Buffer` assemble strings. Never concat `+` inside loop.
 - Prefer `slices.*` and `maps.*` (stdlib, Go 1.21+) over manual for-range implementations.
 - Use index-only range (`for i := range s`) when element value not needed — avoids implicit copy.
 
@@ -97,13 +97,13 @@ package mypkg
 
 ### Cobra CLI
 
-- Place CLI code under dedicated package (e.g., `internal/cobra/`); one file per command + matching `_test.go`.
-- Name constructors `{name}Cmd() *cobra.Command`; pass shared state as params, not globals.
+- Place CLI code under dedicated package (e.g., `internal/cobra/`). One file per command + matching `_test.go`.
+- Name constructors `{name}Cmd() *cobra.Command`. Pass shared state as params, not globals.
 - Wire subcommands single top-level `Execute()` function.
 - Always use `RunE` instead of `Run`.
-- Set `SilenceErrors: true` and `SilenceUsage: true` on root command; handle errors/usage printing manual.
-- Use `PersistentPreRunE` for cross-cutting setup (logger, working directory); `PreRunE` for command-specific validation.
-- Use `PersistentFlags()` for flags inherited by all subcommands; `Flags()` for command-local flags.
+- Set `SilenceErrors: true` and `SilenceUsage: true` on root command. Handle errors/usage printing manual.
+- Use `PersistentPreRunE` for cross-cutting setup (logger, working directory). Use `PreRunE` for command-specific validation.
+- Use `PersistentFlags()` for flags inherited by all subcommands. Use `Flags()` for command-local flags.
 - Enforce flag constraints with `MarkFlagRequired()` and related `MarkFlags*` methods.
 - Store flag names as package-level constants, reuse across files/tests.
 - No `viper`. Implement local helpers like `getenv()` and `coalesce()`.

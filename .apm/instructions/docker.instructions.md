@@ -22,9 +22,9 @@ FROM golang:1.23 AS build
 
 - Build stage: language-specific image.
 - Run stage: smallest viable image, in order:
-  1. `scratch` - fully static binaries, no syscalls needing shared libs or CA certs.
-  2. `gcr.io/distroless/static-debian12:nonroot` - CA certs or minimal libc needed (e.g. static binary makes HTTPS calls).
-  3. `alpine` - fallback when runtime env needed (e.g. JRE for Java).
+  1. `scratch`: fully static binaries, no syscalls needing shared libs or CA certs.
+  2. `gcr.io/distroless/static-debian12:nonroot`: CA certs or minimal libc needed (e.g. static binary makes HTTPS calls).
+  3. `alpine`: fallback when runtime env needed (e.g. JRE for Java).
 
 ## Instructions
 

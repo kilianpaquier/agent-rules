@@ -11,7 +11,7 @@ paths: ["**/*.ts", "**/*.tsx", "**/*.js"]
 ## Functions & exports
 
 - Exported functions: arrow functions (`export const fn = (...) => { }`).
-- Named exports only - no default exports.
+- Named exports only (no default exports).
 - File names: `kebab-case`.
 
 ## Types
@@ -27,7 +27,7 @@ paths: ["**/*.ts", "**/*.tsx", "**/*.js"]
 ## Style
 
 - No semicolons (enforced by ESLint/Prettier `semi: false`).
-- Always braces `{ }` for `if`/`else`/`for`/`while`/etc bodies - never single-statement inline without braces.
+- Always braces `{ }` for `if`/`else`/`for`/`while`/etc bodies. Never single-statement inline without braces.
 - Never labeled statements (`label:`), labeled `break`/`continue`, or `goto`-style control flow.
 
 ## Imports
