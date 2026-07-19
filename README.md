@@ -11,21 +11,21 @@ My own personal global AI agent behavior rules and per-language coding conventio
 > Prefer **APM** installation, broader [agents compatibility](https://microsoft.github.io/apm/consumer/install-packages/#where-files-land) than
 > **Open Plugin** on [rules](https://open-plugins.com/agent-builders/components/rules).
 
-**Agent plugin**:
+**Native plugin**:
 ```sh
 my-agent plugin marketplace add kilianpaquier/agent-rules
 my-agent plugin install agent-rules@agent-rules
 ```
 
-**Agent Package Manager plugin**:
+**APM package (recommended)**:
+```sh
+apm install kilianpaquier/agent-rules -g --target <claude|copilot|...>
+```
+
+**APM plugin**:
 ```sh
 apm marketplace add kilianpaquier/agent-rules
 apm install agent-rules@agent-rules -g --target <claude|copilot|...>
-```
-
-**Agent Package Manager native**:
-```sh
-apm install kilianpaquier/agent-rules -g --target <claude|copilot|...>
 ```
 
 ## Instructions
