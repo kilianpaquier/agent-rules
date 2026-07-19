@@ -106,7 +106,7 @@ paths: ["**"]
 - Keep tests minimal, focused: one behavior per test.
 - Mark test phases with `// Arrange`, `// Act`, `// Assert` comments (drop comment when phase has no steps).
 
-### Tools
+## Tools
 
 - Never use `curl`, prefer `WebFetch` tool.
 - Use `git`, `node`, `python` only when explicitly asked.
