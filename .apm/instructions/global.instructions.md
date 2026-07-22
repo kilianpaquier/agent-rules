@@ -1,11 +1,3 @@
----
-alwaysApply: true
-applyTo: "**"
-description: Global AI behavior, process, review, and code style instructions
-globs: ["**"]
-paths: ["**"]
----
-
 # Global instructions
 
 ## Prose
