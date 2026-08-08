@@ -5,12 +5,11 @@ description: Dockerfile conventions
 globs: ["**/Dockerfile", "**/Dockerfile.*"]
 paths: ["**/Dockerfile", "**/Dockerfile.*"]
 ---
-
 # Dockerfile
 
 ## Stages
 
-- Always multi-stage builds.
+- Always multi-stage build.
 - Label each stage: comment banner + named `AS <stage>`:
 
 ```dockerfile
@@ -21,23 +20,23 @@ FROM golang:1.23 AS build
 ```
 
 - Build stage: language-specific image.
-- Run stage: smallest viable image, in order:
-  1. `scratch`: fully static binaries, no syscalls needing shared libs or CA certs.
-  2. `gcr.io/distroless/static-debian12:nonroot`: CA certs or minimal libc needed (e.g. static binary makes HTTPS calls).
-  3. `alpine`: fallback when runtime env needed (e.g. JRE for Java).
+- Run stage: smallest viable image, order:
+  1. `scratch`: static binary, no syscalls need shared libs/CA certs.
+  2. `gcr.io/distroless/static-debian12:nonroot`: CA certs or minimal libc need (*e.g.* static binary HTTPS calls).
+  3. `alpine`: fallback, runtime env need (*e.g.* JRE for Java).
 
 ## Instructions
 
-- Set `WORKDIR /app` every stage.
-- Declare `ARG` before first instruction using it.
-- Chain `RUN` commands with `&&` and `\`, not multiple `RUN` layers.
-- Multi-file `COPY`: one path per line, `\` continuation.
-- JSON array syntax for `ENTRYPOINT`: `ENTRYPOINT [ "/app/binary" ]`.
-- Prefer `ENTRYPOINT` over `CMD` for binaries.
+- `WORKDIR /app` every stage.
+- `ARG` before first use.
+- Chain `RUN` with `&&` + `\`, not multi `RUN` layers.
+- Multi-file `COPY`: one path/line, `\` continuation.
+- JSON array syntax `ENTRYPOINT`: `ENTRYPOINT [ "/app/binary" ]`.
+- `ENTRYPOINT` over `CMD` for binaries.
 
 ## Labels
 
-Use OCI image spec labels. Group `authors`/`vendor` together, rest alphabetical:
+OCI image spec labels. Group `authors`/`vendor` together, rest alphabetical:
 
 ```dockerfile
 LABEL org.opencontainers.image.authors="name <email>"
@@ -61,4 +60,4 @@ ARG GIT_REF_NAME
 ARG VERSION=v0.0.0
 ```
 
-Go projects: also declare `ARG CGO_ENABLED=0` in build stage.
+Go project: also `ARG CGO_ENABLED=0` in build stage.

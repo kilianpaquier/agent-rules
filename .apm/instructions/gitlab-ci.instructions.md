@@ -5,34 +5,33 @@ description: GitLab CI conventions
 globs: ["**/.gitlab-ci.{yml,yaml}", "**/.gitlab/**/*.{yml,yaml}"]
 paths: ["**/.gitlab-ci.{yml,yaml}", "**/.gitlab/**/*.{yml,yaml}"]
 ---
-
 # GitLab CI
 
 ## To Be Continuous
 
-Use [To Be Continuous](https://gitlab.com/to-be-continuous) components whenever supported tool or workflow needed. Each component's available `inputs` defined in its template file.
+Use [To Be Continuous](https://gitlab.com/to-be-continuous) components when tool/workflow needed. Each component's `inputs` in template file.
 
-Template URL pattern: `https://gitlab.com/to-be-continuous/{component}/-/raw/main/templates/gitlab-ci-{component}.yml`
+Template URL: `https://gitlab.com/to-be-continuous/{component}/-/raw/main/templates/gitlab-ci-{component}.yml`
 
-Exception: `semantic-release` uses alias `semrel` → `gitlab-ci-semrel.yml`.
+Exception: `semantic-release` alias `semrel` → `gitlab-ci-semrel.yml`.
 
-Available components: `ansible`, `aws`, `azure`, `bash`, `docker`, `gcloud`, `golang`, `gradle`, `helm`, `maven`, `node`, `pre-commit`, `python`, `renovate`, `rust`, `semantic-release`, `sonar`, `terraform`.
+Components: `ansible`, `aws`, `azure`, `bash`, `docker`, `gcloud`, `golang`, `gradle`, `helm`, `maven`, `node`, `pre-commit`, `python`, `renovate`, `rust`, `semantic-release`, `sonar`, `terraform`.
 
 ## Includes
 
-- Use `include: - component:` for all external templates. Prefer over `project:`, `remote:`, `template:`.
-- Use `inputs:` to pass parameters to component.
-- Pin component refs to tag:
+- `include: - component:` for external templates. Over `project:`, `remote:`, `template:`.
+- `inputs:` pass params to component.
+- Pin refs to tag:
 ```yaml
 - component: gitlab.com/org/template/job@1.5.0
   inputs:
     some-input: value
 ```
-- Use `include: - local:` only for local pipeline files within same repo.
+- `include: - local:` only local pipeline files same repo.
 
 ## Job key ordering
 
-Order job keys (omit unneeded):
+Order (omit unneeded):
 
 1. `extends`
 2. `stage`
@@ -52,18 +51,18 @@ Order job keys (omit unneeded):
 
 ## Jobs
 
-- Names: `kebab-case`. Use `:` as namespace separator (e.g., `semantic-release:dry-run`).
-- Set `needs: []` for jobs must run immediately, no waiting prior stages.
-- Set `interruptible: true` globally via `default:` block. Override `interruptible: false` for release jobs.
+- Names `kebab-case`. `:` namespace separator (*e.g.*, `semantic-release:dry-run`).
+- `needs: []` jobs must run immediate, no wait prior stages.
+- `interruptible: true` global via `default:`. Override `interruptible: false` release jobs.
 
 ## Variables
 
-- Names: `SCREAMING_SNAKE_CASE`.
+- Names `SCREAMING_SNAKE_CASE`.
 
 ## Rules
 
-- Use `rules:` with `if/when` pairs. Prefer `rules:` over `only:/except:`.
-- Prefer conditions with explicit `when: never` to block cases. End with `when: on_success` as fallback:
+- `rules:` with `if/when` pairs. Over `rules:` `only:/except:`.
+- Explicit `when: never` block cases. End `when: on_success` fallback:
 
 ```yaml
 rules:

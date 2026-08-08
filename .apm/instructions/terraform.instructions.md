@@ -5,25 +5,24 @@ description: Terraform / OpenTofu conventions
 globs: ["**/*.tf", "**/*.tofu", "**/*.tfvars"]
 paths: ["**/*.tf", "**/*.tofu", "**/*.tfvars"]
 ---
-
 # Terraform / OpenTofu
 
 ## Module file layout
 
 Standard files per module: `versions.tf`, `providers.tf`, `variables.tf`, `main.tf`, `outputs.tf`.
-Add `data_and_locals.tf` (not `locals.tf`) only when many data sources or locals, else keep in `main.tf`.
+Add `data_and_locals.tf` (not `locals.tf`) only many data sources/locals, else keep in `main.tf`.
 Add `imports.tf` for Terraform import blocks.
 
 ## Naming
 
-- Single resource of its type in module: use `"default"` as resource label.
+- Single resource of type in module: use `"default"` as resource label.
 - Variables, locals, outputs: `snake_case`.
 
 ## Block ordering
 
 - `for_each` / `count` first in resource, module blocks.
 - `source` first in module blocks.
-- Remaining args alphabetically.
+- Remaining args alphabetical.
 
 ## Provider blocks
 

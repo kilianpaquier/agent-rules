@@ -5,14 +5,13 @@ description: Go test file conventions
 globs: ["**/*_test.go"]
 paths: ["**/*_test.go"]
 ---
-
 # Go tests
 
 ## Package naming
 
 - Always use external test package: `package foo_test`.
-- Use `package foo` only when project already does so (check existing test files first).
-- Directory has both styles → match file being extended. New standalone test files default `package foo_test`.
+- Use `package foo` only if project already do. Check existing test files first.
+- Dir has both styles: match file being extended. New standalone test files default `package foo_test`.
 
 ## Structure
 
@@ -25,8 +24,8 @@ paths: ["**/*_test.go"]
 ## Assertions
 
 - Match project's existing test library.
-- No library present → stdlib `testing` only.
-- Use `require.` (or equivalent fail-fast assertions) for preconditions, `assert.` for actual assertions.
+- No library present: stdlib `testing` only.
+- Use `require.` (or equiv fail-fast) preconditions, `assert.` actual assertions.
 
 ## Stdlib example
 

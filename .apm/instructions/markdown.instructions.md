@@ -5,32 +5,31 @@ description: Markdown file conventions
 globs: ["**/*.md"]
 paths: ["**/*.md"]
 ---
-
 # Markdown
 
 ## Structure
 
 - One `#` heading per doc.
-- No skip heading levels (e.g. `##` direct under `#`, not `###`).
-- Blank line before, after every heading, code block, list, table.
+- No skip heading level (e.g. `##` direct under `#`, not `###`).
+- Blank line before, after heading, code block, list, table.
 
 ## Lists
 
-- Use `-` unordered items, not `*` or `+`.
-- Use `1.` ordered lists.
+- Use `-` unordered, not `*`/`+`.
+- Use `1.` ordered.
 
 ## Code blocks
 
-- Always specify language fenced code blocks:
+- Always specify language:
 ```sh
 echo hello
 ```
 
 ## Tables
 
-- Align column separators (`|`) vertically (do not use any language for this action).
-- Pad cell content with spaces to align columns.
-- Header separator row: use `-` repeated to match the column width.
+- Align `|` vertically (no language for this).
+- Pad cell content, align columns.
+- Header separator row: `-` repeated matching column width.
 
 Example:
 
@@ -41,5 +40,5 @@ Example:
 
 ## Links
 
-- Inline links: `[text](url)`.
-- No bare URLs in prose. Wrap them in angle brackets (`<url>`) or use inline link syntax.
+- Inline: `[text](url)`.
+- No bare URL in prose. Wrap `<url>` or use inline link syntax.

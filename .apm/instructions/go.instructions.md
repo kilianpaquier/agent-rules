@@ -5,17 +5,16 @@ description: Go file conventions
 globs: ["**/*.go"]
 paths: ["**/*.go"]
 ---
-
 # Go
 
 ## Comments
 
-- Add GoDoc comments every exported identifier (functions, types, variables, constants).
-- Use `doc.go` files for package-level docs.
+- GoDoc comment every exported ident (func, type, var, const).
+- Use `doc.go` files pkg-level docs.
 
 ### Example
 
-Single-line (most identifiers):
+Single-line (most idents):
 
 ```go
 // FunctionName does something with input and returns result.
@@ -25,7 +24,7 @@ func FunctionName(input string) (string, error) { ... }
 type TypeName struct { ... }
 ```
 
-Multiline (when extra context needed, separate paragraphs with `//`):
+Multiline (extra context needed, separate paragraphs with `//`):
 
 ```go
 // FunctionName does something with input and returns result.
@@ -35,7 +34,7 @@ Multiline (when extra context needed, separate paragraphs with `//`):
 func FunctionName(input string) (string, error) { ... }
 ```
 
-`doc.go` (package-level documentation):
+`doc.go` (pkg-level doc):
 
 ```go
 /*
@@ -59,34 +58,34 @@ package mypkg
 
 ## Declarations
 
-- Use `:=` local vars. Reserve `var` for zero values, package-level decls, interface compliance checks.
+- `:=` local vars. `var` only zero values, pkg-level decls, interface compliance checks.
 - Avoid named return values.
-- Avoid global `var` decls unless explicit required.
-- Avoid `init()`. Use constructor functions instead.
+- Avoid global `var` decls unless required.
+- Avoid `init()`. Use constructor funcs instead.
 
 ## Errors
 
 - Wrap `fmt.Errorf("small context information: %w", err)`. Never swallow errors.
-- Declare `var ErrFoo = errors.New("...")` only when caller must use `errors.Is` / `errors.As`.
+- Declare `var ErrFoo = errors.New("...")` only when caller needs `errors.Is`/`errors.As`.
 - Error strings: short, lowercase, no trailing punctuation.
 - Aggregate multiple errors `errors.Join(errs...)`.
 
 ## Interfaces
 
-- Use concrete types default. Define interface only when two+ distinct implementations exist.
+- Concrete types default. Interface only when two+ distinct implementations exist.
 - Verify compliance compile time: `var _ MyInterface = (*MyType)(nil) // ensure interface is implemented`
 
 ## Linting
 
-- Use targeted `//nolint:rulename` directives. Never bare `//nolint`.
+- Targeted `//nolint:rulename` directives. Never bare `//nolint`.
 
 ## Optimizations
 
 - Pre-allocate slices/maps when final size known: `make([]T, 0, n)` and `make(map[K]V, n)`.
-- Size unknown before loop → declare without capacity (`var s []T`). Add `//nolint:prealloc` only when golangci-lint flags it.
-- Use `strings.Builder` or `bytes.Buffer` assemble strings. Never concat `+` inside loop.
-- Prefer `slices.*` and `maps.*` (stdlib, Go 1.21+) over manual for-range implementations.
-- Use index-only range (`for i := range s`) when element value not needed — avoids implicit copy.
+- Size unknown before loop → declare no capacity (`var s []T`). Add `//nolint:prealloc` only when golangci-lint flags.
+- Use `strings.Builder` or `bytes.Buffer` assemble strings. Never concat `+` in loop.
+- Prefer `slices.*`/`maps.*` (stdlib, Go 1.21+) over manual for-range.
+- Index-only range (`for i := range s`) when value not needed, avoids implicit copy.
 
 ## Receivers
 
@@ -97,16 +96,16 @@ package mypkg
 
 ### Cobra CLI
 
-- Place CLI code under dedicated package (e.g., `internal/cobra/`). One file per command + matching `_test.go`.
-- Name constructors `{name}Cmd() *cobra.Command`. Pass shared state as params, not globals.
-- Wire subcommands single top-level `Execute()` function.
-- Always use `RunE` instead of `Run`.
-- Set `SilenceErrors: true` and `SilenceUsage: true` on root command. Handle errors/usage printing manual.
-- Use `PersistentPreRunE` for cross-cutting setup (logger, working directory). Use `PreRunE` for command-specific validation.
-- Use `PersistentFlags()` for flags inherited by all subcommands. Use `Flags()` for command-local flags.
-- Enforce flag constraints with `MarkFlagRequired()` and related `MarkFlags*` methods.
-- Store flag names as package-level constants, reuse across files/tests.
-- No `viper`. Implement local helpers like `getenv()` and `coalesce()`.
+- CLI code dedicated pkg (*e.g.*, `internal/cobra/`). One file per command + matching `_test.go`.
+- Name constructors `{name}Cmd() *cobra.Command`. Shared state as params, not globals.
+- Wire subcommands single top-level `Execute()` func.
+- Always `RunE`, not `Run`.
+- Set `SilenceErrors: true` and `SilenceUsage: true` on root cmd. Handle error/usage printing manual.
+- `PersistentPreRunE` for cross-cutting setup (logger, working dir). `PreRunE` for command-specific validation.
+- `PersistentFlags()` for flags inherited by all subcommands. `Flags()` for command-local flags.
+- Enforce flag constraints `MarkFlagRequired()` and related `MarkFlags*` methods.
+- Flag names as pkg-level constants, reuse across files/tests.
+- No `viper`. Local helpers `getenv()` and `coalesce()`.
   - `getenv` maps kebab-case flag name to `SCREAMING_SNAKE_CASE` env var
   - `coalesce` returns first non-empty string. Use `coalesce(getenv(flagName), hardcodedDefault)` as flag default.
 

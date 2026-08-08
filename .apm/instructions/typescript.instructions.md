@@ -5,39 +5,38 @@ description: TypeScript / JavaScript conventions
 globs: ["**/*.ts", "**/*.tsx", "**/*.js"]
 paths: ["**/*.ts", "**/*.tsx", "**/*.js"]
 ---
-
 # TypeScript / JavaScript
 
 ## Functions & exports
 
-- Exported functions: arrow functions (`export const fn = (...) => { }`).
-- Named exports only (no default exports).
-- File names: `kebab-case`.
+- Export fn: arrow (`export const fn = (...) => { }`).
+- Named export only, no default.
+- File name: `kebab-case`.
 
 ## Types
 
-- `interface` for public contracts (objects, class shapes).
-- `type` for aliases and unions.
-- Enum values: SCREAMING_SNAKE_CASE strings.
+- `interface` for public contract (object, class shape).
+- `type` for alias, union.
+- Enum value: SCREAMING_SNAKE_CASE string.
 
 ## Errors
 
-- Always throw errors, never return as values.
+- Throw error always, never return as value.
 
 ## Style
 
-- No semicolons (enforced by ESLint/Prettier `semi: false`).
-- Always braces `{ }` for `if`/`else`/`for`/`while`/etc bodies. Never single-statement inline without braces.
-- Never labeled statements (`label:`), labeled `break`/`continue`, or `goto`-style control flow.
+- No semicolon (ESLint/Prettier `semi: false`).
+- Always braces `{ }` for `if`/`else`/`for`/`while`/etc. No single-statement inline.
+- No labeled statement (`label:`), labeled `break`/`continue`, `goto`-style control flow.
 
 ## Imports
 
-- Sort imports alphabetically within each group (enforced by ESLint `sort-imports`).
-- No default imports from local modules.
+- Sort alphabetical within group (ESLint `sort-imports`).
+- No default import from local module.
 
 ## Comments
 
-- Add JSDoc to every exported function (parameters, return type, thrown errors, etc).
+- JSDoc on every export fn (params, return type, thrown error).
 
 ### Example
 
@@ -60,7 +59,7 @@ export const functionName = (param1: string, param2: number): string => { ... }
 - Framework: match project (Bun test, Jest, Vitest, etc).
 - File pattern: `*.test.ts`.
 - Structure: `describe` + `test`.
-- Mocks: `spyOn` + framework teardown in `afterEach` (e.g. `mock.restore()` for Bun, `jest.restoreAllMocks()` for Jest, `vi.restoreAllMocks()` for Vitest).
+- Mock: `spyOn` + framework teardown in `afterEach` (*e.g.* `mock.restore()` Bun, `jest.restoreAllMocks()` Jest, `vi.restoreAllMocks()` Vitest).
 
 ### Example
 

@@ -5,17 +5,16 @@ description: Docker Compose conventions
 globs: ["**/{docker-compose,compose}.{yml,yaml}", "**/{docker-compose,compose}.*.{yml,yaml}"]
 paths: ["**/{docker-compose,compose}.{yml,yaml}", "**/{docker-compose,compose}.*.{yml,yaml}"]
 ---
-
 # Docker Compose
 
 ## File
 
-- Prefer `docker-compose.yml` as filename. `compose.yml` also fine.
-- Skip `version:` field (removed Compose v2).
+- Prefer `docker-compose.yml` filename. `compose.yml` fine too.
+- Skip `version:` field, removed Compose v2.
 
 ## Services
 
-Order service keys as follows (skip keys not needed):
+Order keys, skip unneeded:
 
 1. `build` / `image`
 2. `container_name`
@@ -28,16 +27,16 @@ Order service keys as follows (skip keys not needed):
 
 ## Images
 
-- Never `:latest`. Always pin image tags to explicit version (e.g. `postgres:16`).
+- Never `:latest`. Pin explicit version (*e.g.* `postgres:16`).
 
 ## Restart policy
 
-- `restart: unless-stopped` for long-running services.
-- `restart: on-failure` for one-shot or migration containers.
+- `restart: unless-stopped` long-running services.
+- `restart: on-failure` one-shot/migration containers.
 
 ## Environment variables
 
-- Map syntax for `environment:`:
+- Map syntax `environment:`:
 
 ```yaml
 environment:
@@ -47,9 +46,9 @@ environment:
 
 ## depends_on
 
-- Define `healthcheck:` block on service when it lacks native `HEALTHCHECK` instruction but dependent service needs `condition: service_healthy`.
-- Use `condition: service_healthy` when service has health check (native or compose-level). Fall back `condition: service_started` otherwise.
-- Use `condition: service_completed_successfully` when depending on a one-shot/job container (migration, seed, init job) that must exit successfully before dependent starts:
+- Define `healthcheck:` block when service lacks native `HEALTHCHECK` but dependent needs `condition: service_healthy`.
+- Use `condition: service_healthy` if service has health check (native or compose-level). Else `condition: service_started`.
+- Use `condition: service_completed_successfully` for one-shot/job container (migration, seed, init) must exit successfully before dependent starts:
 
 ```yaml
 depends_on:
@@ -61,5 +60,5 @@ depends_on:
 
 ## Volumes
 
-- Named volumes (top-level `volumes:` block) for persistent data.
+- Named volumes (top-level `volumes:`) for persistent data.
 - Bind mounts for dev source files.
