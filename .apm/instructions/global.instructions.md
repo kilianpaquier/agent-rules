@@ -4,7 +4,7 @@
 
 - Apply everywhere human-read text: comments, docs, commit messages, PR/issue bodies, chat responses.
 - Write human, not AI report. English always.
-- Banned chars, zero exceptions: `—`.
+- Banned chars, zero exceptions: `—`, `→`.
 - Forbidden mid-sentence: `;` and ` - `. Scan before send, fix: parenthesis for subinfo, or split sentences.
 - Break long lines at sentence-ending periods, or before transition words (`or`, `and`, `but`, etc).
   Transition word starts new line.

@@ -63,6 +63,30 @@ package mypkg
 - Avoid global `var` decls unless required.
 - Avoid `init()`. Use constructor funcs instead.
 
+## Struct literals
+
+- Fits one line: keep it one line, fields comma-separated.
+- Doesn't fit: every field on its own line (gofmt aligns the colons). Never group 2+ fields on a wrapped line, never partial-wrap a field list.
+- Nested struct also too long: break level by level, one `Field: &Type{` opener per line. Never cram multiple opening braces onto one line.
+- Slice needs breaking: one element per line. Each element can stay compact on one line if it fits on its own.
+
+```go
+// bad: partial grouping across wrapped lines
+Config: pkg.Options{
+	Name: "foo", Tags: []string{"a", "b"},
+	Owner: "bar", Path: "p", Region: "r",
+},
+
+// good: every field its own line once wrapped
+Config: pkg.Options{
+	Name:   "foo",
+	Tags:   []string{"a", "b"},
+	Owner:  "bar",
+	Path:   "p",
+	Region: "r",
+},
+```
+
 ## Errors
 
 - Wrap `fmt.Errorf("small context information: %w", err)`. Never swallow errors.
