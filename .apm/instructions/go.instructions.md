@@ -106,7 +106,7 @@ Config: pkg.Options{
 ## Optimizations
 
 - Pre-allocate slices/maps when final size known: `make([]T, 0, n)` and `make(map[K]V, n)`.
-- Size unknown before loop → declare no capacity (`var s []T`). Add `//nolint:prealloc` only when golangci-lint flags.
+- Size unknown before loop: declare no capacity (`var s []T`). Add `//nolint:prealloc` only when golangci-lint flags.
 - Use `strings.Builder` or `bytes.Buffer` assemble strings. Never concat `+` in loop.
 - Prefer `slices.*`/`maps.*` (stdlib, Go 1.21+) over manual for-range.
 - Index-only range (`for i := range s`) when value not needed, avoids implicit copy.

@@ -13,7 +13,7 @@ Use [To Be Continuous](https://gitlab.com/to-be-continuous) components when tool
 
 Template URL: `https://gitlab.com/to-be-continuous/{component}/-/raw/main/templates/gitlab-ci-{component}.yml`
 
-Exception: `semantic-release` alias `semrel` → `gitlab-ci-semrel.yml`.
+Exception: `semantic-release` aliased to `semrel`.
 
 Components: `ansible`, `aws`, `azure`, `bash`, `docker`, `gcloud`, `golang`, `gradle`, `helm`, `maven`, `node`, `pre-commit`, `python`, `renovate`, `rust`, `semantic-release`, `sonar`, `terraform`.
 
