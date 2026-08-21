@@ -1,0 +1,11 @@
+{
+    "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+
+    "name": "agent-rules",
+    "description": "Kilian PAQUIER's personal global AI agent behavior rules and per-language coding conventions, shipped as instructions / rules",
+    "version": "0.1.0",
+    "license": "MIT",
+
+    "repository": "https://gitlab.com/kilianpaquier/agent-rules",
+    "homepage": "https://gitlab.com/kilianpaquier/agent-rules"
+}

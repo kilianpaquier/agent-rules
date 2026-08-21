@@ -10,15 +10,15 @@
 ---
 
 My own personal global AI agent behavior rules and per-language coding conventions,
-shipped as an [**Open Plugin**](https://open-plugins.com/plugin-builders/specification) Spec plugin,
+shipped as an [**Agent Plugins**](https://agent-plugins.org/specification) plugin,
 [**Agent Package Manager**](https://microsoft.github.io/apm/producer/author-primitives/) package,
-and marketplace (**Claude Code**, **Copilot** and **Open Plugin** formats).
+and marketplace (**Claude Code**, **Copilot** and **Agent Plugins** formats).
 
 ## Installation
 
 > [!warning]
-> Prefer **APM** installation: it offers broader [agent compatibility](https://microsoft.github.io/apm/consumer/install-packages/#where-files-land) than
-> **Open Plugin** for [rules](https://open-plugins.com/agent-builders/components/rules).
+> [**Agent Plugins**](https://agent-plugins.org/specification) does not yet define rules component,
+> so a native plugin install ships nothing.
 
 **Native plugin (limited compatibility)**:
 ```sh
@@ -39,7 +39,7 @@ apm install agent-rules@agent-rules -g --target <claude|copilot|...>
 
 ## Instructions
 
-This plugin ships an **Agent Package Manager** and **Open Plugin** standard rules (or instructions):
+This plugin ships an **Agent Package Manager** and **Agent Plugins** standard rules (or instructions):
 
 - Global AI agent behavior (response style, scope, process, code review, code style, design, testing)
 - Docker

@@ -5,7 +5,7 @@ version: 0.1.0
 type: instructions
 
 author: Kilian PAQUIER
-description: My own personal global AI agent behavior rules and per-language coding conventions, shipped as an Open Plugin, Agent Package Manager package, and marketplace
+description: My own personal global AI agent behavior rules and per-language coding conventions, shipped as an Agent Plugins, Agent Package Manager package, and marketplace
 license: MIT
 
 marketplace:
