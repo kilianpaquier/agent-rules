@@ -58,7 +58,7 @@ apm install agent-rules@agent-rules -g --target <claude|copilot|...>
 | **Antigravity**  | `plugin.json`                | `rules/*.md`                          |
 | **Claude Code**  | `.claude-plugin/plugin.json` | -                                     |
 | **Codex**        | `.codex-plugin/plugin.json`  | -                                     |
-| **Copilot**      | `.plugin/plugin.json`        | -                                     |
+| **Copilot**      | `plugin.json`                | -                                     |
 | **Cursor**       | `.cursor-plugin/plugin.json` | `rules/*.mdc`                         |
 | **Devin**        | `.claude-plugin/plugin.json` | `rules/*.md`                          |
 | **Hermes Agent** | `plugin.yaml`                | -                                     |
