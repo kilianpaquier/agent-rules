@@ -10,15 +10,24 @@
 ---
 
 My own personal global AI agent behavior rules and per-language coding conventions,
-shipped as an [**Agent Plugins**](https://agent-plugins.org/specification) plugin,
-[**Agent Package Manager**](https://microsoft.github.io/apm/producer/author-primitives/) package,
-and marketplace (**Claude Code**, **Copilot** and **Agent Plugins** formats).
+shipped as a plugin (various runtimes supported)
+and an [**Agent Package Manager**](https://microsoft.github.io/apm/producer/author-primitives/) package.
+
+## Instructions
+
+- Global AI agent behavior (response style, scope, process, code review, code style, design, testing)
+- Docker
+- Docker Compose
+- GitLab CI
+- Go
+- Go tests
+- Makefile
+- Markdown
+- Shell
+- Terraform / OpenTofu
+- TypeScript / JavaScript
 
 ## Installation
-
-> [!warning]
-> [**Agent Plugins**](https://agent-plugins.org/specification) does not yet define rules component,
-> so a native plugin install ships nothing.
 
 **Native plugin (limited compatibility)**:
 ```sh
@@ -36,18 +45,20 @@ apm marketplace add kilianpaquier/agent-rules
 apm install agent-rules@agent-rules -g --target <claude|copilot|...>
 ```
 
-## Instructions
+## Compatibility table
 
-This plugin ships an **Agent Package Manager** and **Agent Plugins** standard rules (or instructions):
+> [!note]
+> A plugin's `rules/` component is only defined in the **Cursor**, **Antigravity** and **Devin** formats.
+>
+> Use the **APM package** install for the other runtimes instead, it writes each runtime's own instruction file(s) in the right place.
 
-- Global AI agent behavior (response style, scope, process, code review, code style, design, testing)
-- Docker
-- Docker Compose
-- GitLab CI
-- Go
-- Go tests
-- Makefile
-- Markdown
-- Shell
-- Terraform / OpenTofu
-- TypeScript / JavaScript
+| Agent Runtime    | Manifest                     | Native `rules/` component             |
+| ---------------- | ---------------------------- | ------------------------------------- |
+| **APM**          | `apm.yml`                    | `.apm/instructions/*.instructions.md` |
+| **Antigravity**  | `plugin.json`                | `rules/*.md`                          |
+| **Claude Code**  | `.claude-plugin/plugin.json` | -                                     |
+| **Codex**        | `.codex-plugin/plugin.json`  | -                                     |
+| **Copilot**      | `.plugin/plugin.json`        | -                                     |
+| **Cursor**       | `.cursor-plugin/plugin.json` | `rules/*.mdc`                         |
+| **Devin**        | `.claude-plugin/plugin.json` | `rules/*.md`                          |
+| **Hermes Agent** | `plugin.yaml`                | -                                     |

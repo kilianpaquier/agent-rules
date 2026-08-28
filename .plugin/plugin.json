@@ -1,6 +1,4 @@
 {
-    "$schema": "https://www.schemastore.org/claude-code-plugin-manifest.json",
-
     "name": "agent-rules",
     "description": "My own personal global AI agent behavior rules and per-language coding conventions, shipped as an Agent Plugins, Agent Package Manager package, and marketplace",
     "version": "0.1.0",

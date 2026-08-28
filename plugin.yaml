@@ -1,0 +1,5 @@
+name: agent-rules
+version: 0.1.0
+description: My own personal global AI agent behavior rules and per-language coding conventions, shipped as an Agent Plugins, Agent Package Manager package, and marketplace
+license: MIT
+homepage: https://gitlab.com/kilianpaquier/agent-rules

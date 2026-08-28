@@ -8,6 +8,8 @@ author: Kilian PAQUIER
 description: My own personal global AI agent behavior rules and per-language coding conventions, shipped as an Agent Plugins, Agent Package Manager package, and marketplace
 license: MIT
 
+# targets: [claude, codex, copilot, cursor, gemini, kiro, opencode, windsurf]
+
 # marketplace:
 #   outputs:
 #     claude: {}
