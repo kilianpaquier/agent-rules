@@ -2,7 +2,7 @@
     "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
 
     "name": "agent-rules",
-    "description": "Kilian PAQUIER's personal global AI agent behavior rules and per-language coding conventions, shipped as instructions / rules",
+    "description": "My own personal global AI agent behavior rules and per-language coding conventions, shipped as an Agent Plugins, Agent Package Manager package, and marketplace",
     "version": "0.1.0",
     "license": "MIT",
 
