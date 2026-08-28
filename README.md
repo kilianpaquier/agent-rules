@@ -22,8 +22,7 @@ and marketplace (**Claude Code**, **Copilot** and **Agent Plugins** formats).
 
 **Native plugin (limited compatibility)**:
 ```sh
-my-agent plugin marketplace add kilianpaquier/agent-rules
-my-agent plugin install agent-rules@agent-rules
+my-agent plugin install agent-rules@<importing marketplace>
 ```
 
 **APM package (recommended)**:

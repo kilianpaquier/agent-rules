@@ -8,16 +8,16 @@ author: Kilian PAQUIER
 description: My own personal global AI agent behavior rules and per-language coding conventions, shipped as an Agent Plugins, Agent Package Manager package, and marketplace
 license: MIT
 
-marketplace:
-  outputs:
-    claude: {}
-    codex: {}
+# marketplace:
+#   outputs:
+#     claude: {}
+#     codex: {}
 
-  owner:
-    name: Kilian PAQUIER
-    url: https://kilianpaquier.dev
+#   owner:
+#     name: Kilian PAQUIER
+#     url: https://kilianpaquier.dev
 
-  packages:
-    - category: instructions
-      name: agent-rules
-      source: ./
+#   packages:
+#     - category: instructions
+#       name: agent-rules
+#       source: ./
