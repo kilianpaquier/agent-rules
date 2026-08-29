@@ -1,7 +1,7 @@
 {
     "name": "agent-rules",
     "description": "My own personal global AI agent behavior rules and per-language coding conventions, shipped as an Agent Plugins, Agent Package Manager package, and marketplace",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "license": "MIT",
 
     "repository": "https://gitlab.com/kilianpaquier/agent-rules",

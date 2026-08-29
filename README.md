@@ -15,13 +15,15 @@ and an [**Agent Package Manager**](https://microsoft.github.io/apm/producer/auth
 
 ## Instructions
 
-- Global AI agent behavior (response style, scope, process, code review, code style, design, testing)
+- Global AI agent behavior (scope, safety, process, tools, responses, prose, code style, commits, environment)
+- Code (language-neutral design, safety, dependencies, style, testing)
+- Code review
 - Docker
 - Docker Compose
 - GitLab CI
 - Go
+- Go Cobra CLI
 - Go tests
-- Makefile
 - Markdown
 - Shell
 - Terraform / OpenTofu

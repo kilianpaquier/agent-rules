@@ -4,39 +4,48 @@ applyTo: "**/*.ts,**/*.tsx,**/*.js"
 description: TypeScript / JavaScript conventions
 globs: ["**/*.ts", "**/*.tsx", "**/*.js"]
 paths: ["**/*.ts", "**/*.tsx", "**/*.js"]
+trigger: glob
 ---
+
 # TypeScript / JavaScript
 
 ## Functions & exports
 
-- Export fn: arrow (`export const fn = (...) => { }`).
-- Named export only, no default.
-- File name: `kebab-case`.
+- Export functions as arrows: `export const fn = (...) => { }`.
+- Named exports only, no default.
+- File names `kebab-case`.
 
 ## Types
 
-- `interface` for public contract (object, class shape).
-- `type` for alias, union.
-- Enum value: SCREAMING_SNAKE_CASE string.
+- `interface` for a public contract (object, class shape).
+- `type` for aliases and unions.
+- Enum values SCREAMING_SNAKE_CASE strings.
+- Never `any`. Use `unknown` and narrow.
+
+## Async
+
+- `async`/`await` over `.then()` chains.
+- Never float a promise. Await it, return it, or mark it `void` deliberately.
+- Every `await` in a failure-capable path needs rejection handling.
 
 ## Errors
 
-- Throw error always, never return as value.
+- Always throw errors, never return them as values.
 
 ## Style
 
-- No semicolon (ESLint/Prettier `semi: false`).
-- Always braces `{ }` for `if`/`else`/`for`/`while`/etc. No single-statement inline.
-- No labeled statement (`label:`), labeled `break`/`continue`, `goto`-style control flow.
+- No semicolons (ESLint/Prettier `semi: false`).
+- Always braces for `if`, `else`, `for`, `while`. No single-statement inline.
+- No labeled statements, labeled `break`/`continue`, or goto-style control flow.
 
 ## Imports
 
-- Sort alphabetical within group (ESLint `sort-imports`).
-- No default import from local module.
+- Sort alphabetically within each group (ESLint `sort-imports`).
+- No default import from a local module.
 
 ## Comments
 
-- JSDoc on every export fn (params, return type, thrown error).
+- JSDoc on every exported function (params, return type, thrown errors).
 
 ### Example
 
@@ -56,10 +65,10 @@ export const functionName = (param1: string, param2: number): string => { ... }
 
 ## Tests
 
-- Framework: match project (Bun test, Jest, Vitest, etc).
-- File pattern: `*.test.ts`.
-- Structure: `describe` + `test`.
-- Mock: `spyOn` + framework teardown in `afterEach` (*e.g.* `mock.restore()` Bun, `jest.restoreAllMocks()` Jest, `vi.restoreAllMocks()` Vitest).
+- Match the project's framework (Bun test, Jest, Vitest).
+- File pattern `*.test.ts`.
+- Structure with `describe` and `test`.
+- Mock with `spyOn` and framework teardown in `afterEach` (*e.g.* `mock.restore()` Bun, `jest.restoreAllMocks()` Jest, `vi.restoreAllMocks()` Vitest).
 
 ### Example
 

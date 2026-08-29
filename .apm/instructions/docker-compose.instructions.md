@@ -4,17 +4,19 @@ applyTo: "**/{docker-compose,compose}.{yml,yaml},**/{docker-compose,compose}.*.{
 description: Docker Compose conventions
 globs: ["**/{docker-compose,compose}.{yml,yaml}", "**/{docker-compose,compose}.*.{yml,yaml}"]
 paths: ["**/{docker-compose,compose}.{yml,yaml}", "**/{docker-compose,compose}.*.{yml,yaml}"]
+trigger: glob
 ---
+
 # Docker Compose
 
 ## File
 
-- Prefer `docker-compose.yml` filename. `compose.yml` fine too.
-- Skip `version:` field, removed Compose v2.
+- Prefer the `docker-compose.yml` filename. `compose.yml` is fine too.
+- Skip the `version:` field, removed in Compose v2.
 
 ## Services
 
-Order keys, skip unneeded:
+Order keys, omit unneeded:
 
 1. `build` / `image`
 2. `container_name`
@@ -27,16 +29,16 @@ Order keys, skip unneeded:
 
 ## Images
 
-- Never `:latest`. Pin explicit version (*e.g.* `postgres:16`).
+- Never `:latest`. Pin an explicit version (*e.g.* `postgres:16`).
 
 ## Restart policy
 
-- `restart: unless-stopped` long-running services.
-- `restart: on-failure` one-shot/migration containers.
+- `restart: unless-stopped` for long-running services.
+- `restart: on-failure` for one-shot and migration containers.
 
 ## Environment variables
 
-- Map syntax `environment:`:
+- Map syntax for `environment:`:
 
 ```yaml
 environment:
@@ -46,9 +48,9 @@ environment:
 
 ## depends_on
 
-- Define `healthcheck:` block when service lacks native `HEALTHCHECK` but dependent needs `condition: service_healthy`.
-- Use `condition: service_healthy` if service has health check (native or compose-level). Else `condition: service_started`.
-- Use `condition: service_completed_successfully` for one-shot/job container (migration, seed, init) must exit successfully before dependent starts:
+- Define a `healthcheck:` block when a service lacks a native `HEALTHCHECK` but a dependent needs `condition: service_healthy`.
+- Use `condition: service_healthy` when the service has a health check (native or compose-level), otherwise `condition: service_started`.
+- Use `condition: service_completed_successfully` for a one-shot container (migration, seed, init) that must exit successfully before its dependent starts:
 
 ```yaml
 depends_on:

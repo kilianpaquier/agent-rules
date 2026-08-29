@@ -4,30 +4,35 @@ applyTo: "**/.gitlab-ci.{yml,yaml},**/.gitlab/**/*.{yml,yaml}"
 description: GitLab CI conventions
 globs: ["**/.gitlab-ci.{yml,yaml}", "**/.gitlab/**/*.{yml,yaml}"]
 paths: ["**/.gitlab-ci.{yml,yaml}", "**/.gitlab/**/*.{yml,yaml}"]
+trigger: glob
 ---
+
 # GitLab CI
 
 ## To Be Continuous
 
-Use [To Be Continuous](https://gitlab.com/to-be-continuous) components when tool/workflow needed. Each component's `inputs` in template file.
+Use [To Be Continuous](https://gitlab.com/to-be-continuous) components when a tool or workflow is needed.
+Each component's `inputs` are in its template file.
 
 Template URL: `https://gitlab.com/to-be-continuous/{component}/-/raw/main/templates/gitlab-ci-{component}.yml`
 
-Exception: `semantic-release` aliased to `semrel`.
+Exception: `semantic-release` is aliased to `semrel`.
 
 Components: `ansible`, `aws`, `azure`, `bash`, `docker`, `gcloud`, `golang`, `gradle`, `helm`, `maven`, `node`, `pre-commit`, `python`, `renovate`, `rust`, `semantic-release`, `sonar`, `terraform`.
 
 ## Includes
 
-- `include: - component:` for external templates. Over `project:`, `remote:`, `template:`.
-- `inputs:` pass params to component.
-- Pin refs to tag:
+- `include: - component:` for external templates, over `project:`, `remote:`, and `template:`.
+- `inputs:` passes params to the component.
+- Pin refs to a tag:
+
 ```yaml
 - component: gitlab.com/org/template/job@1.5.0
   inputs:
     some-input: value
 ```
-- `include: - local:` only local pipeline files same repo.
+
+- `include: - local:` only for pipeline files in the same repo.
 
 ## Job key ordering
 
@@ -51,18 +56,19 @@ Order (omit unneeded):
 
 ## Jobs
 
-- Names `kebab-case`. `:` namespace separator (*e.g.*, `semantic-release:dry-run`).
-- `needs: []` jobs must run immediate, no wait prior stages.
-- `interruptible: true` global via `default:`. Override `interruptible: false` release jobs.
+- Names `kebab-case`, with `:` as namespace separator (*e.g.* `semantic-release:dry-run`).
+- `needs: []` for jobs that must run immediately without waiting for prior stages.
+- `interruptible: true` globally via `default:`. Override with `interruptible: false` on release jobs.
 
 ## Variables
 
 - Names `SCREAMING_SNAKE_CASE`.
+- Never hardcode secrets. Use masked or protected CI/CD variables.
 
 ## Rules
 
-- `rules:` with `if/when` pairs. Over `rules:` `only:/except:`.
-- Explicit `when: never` block cases. End `when: on_success` fallback:
+- `rules:` with `if`/`when` pairs, over `only:`/`except:`.
+- Explicit `when: never` for blocked cases. End with a `when: on_success` fallback:
 
 ```yaml
 rules:

@@ -4,56 +4,34 @@ applyTo: "**/*_test.go"
 description: Go test file conventions
 globs: ["**/*_test.go"]
 paths: ["**/*_test.go"]
+trigger: glob
 ---
+
 # Go tests
 
 ## Package naming
 
-- Always use external test package: `package foo_test`.
-- Use `package foo` only if project already do. Check existing test files first.
-- Dir has both styles: match file being extended. New standalone test files default `package foo_test`.
+- Always use the external test package: `package foo_test`.
+- Use `package foo` only when the project already does. Check existing test files first.
+- Directory has both styles: match the file being extended. New standalone test files default to `package foo_test`.
 
 ## Structure
 
-- Use `t.Run("description", func(t *testing.T) { ... })` subtests each test case.
-- No table-driven tests (struct slice + range) unless explicit ask.
-- Use `t.Cleanup(fn)` teardown, state restore. Prefer over `defer` in subtests.
-- Use `t.TempDir()` file I/O (cleaned up auto).
-- Mark test helpers `t.Helper()` first statement.
+- Use `t.Run("description", func(t *testing.T) { ... })` subtests for each test case.
+- No table-driven tests (struct slice plus range) unless asked.
+- Use `t.Cleanup(fn)` for teardown and state restore, over `defer` in subtests.
+- Use `t.TempDir()` for file I/O (cleaned up automatically).
+- Mark test helpers with `t.Helper()` as the first statement.
 
 ## Assertions
 
-- Match project's existing test library.
+- Match the project's existing test library.
 - No library present: stdlib `testing` only.
-- Use `require.` (or equiv fail-fast) preconditions, `assert.` actual assertions.
+- `require.` (or equivalent fail-fast) for preconditions, `assert.` for the actual assertions.
 
-## Stdlib example
+### Example
 
-```go
-package mypackage_test
-
-import (
-  "errors"
-  "testing"
-)
-
-func TestDoSomething(t *testing.T) {
-  t.Run("returns error on invalid input", func(t *testing.T) {
-    // Arrange
-    input := ""
-
-    // Act
-    err := mypackage.DoSomething(input)
-
-    // Assert
-    if !errors.Is(err, mypackage.ErrInvalidInput) {
-      t.Fatalf("expected ErrInvalidInput, got %v", err)
-    }
-  })
-}
-```
-
-## Testify example
+Stdlib: same shape as the **testify** example below, with `t.Fatalf` and `if` checks instead of `require.`/`assert.`.
 
 ```go
 package files_test

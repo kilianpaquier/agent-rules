@@ -4,41 +4,44 @@ applyTo: "**/*.md"
 description: Markdown file conventions
 globs: ["**/*.md"]
 paths: ["**/*.md"]
+trigger: glob
 ---
+
 # Markdown
 
 ## Structure
 
 - One `#` heading per doc.
-- No skip heading level (e.g. `##` direct under `#`, not `###`).
-- Blank line before, after heading, code block, list, table.
+- Never skip a heading level (`##` directly under `#`, not `###`).
+- Blank line before and after every heading, code block, list, and table.
 
 ## Lists
 
-- Use `-` unordered, not `*`/`+`.
-- Use `1.` ordered.
+- Use `-` for unordered lists, not `*` or `+`.
+- Use `1.` for ordered lists.
 
 ## Code blocks
 
-- Always specify language:
+- Always specify the language:
+
 ```sh
 echo hello
 ```
 
 ## Tables
 
-- Align `|` vertically (no language for this).
-- Pad cell content, align columns.
-- Header separator row: `-` repeated matching column width.
+- Align `|` vertically.
+- Pad cell content to align columns.
+- Header separator row: `-` repeated to match column width.
 
 Example:
 
-| Column A     | Column B                  |
-| ------------ | ------------------------- |
-| short        | a longer value            |
-| longer value | another value             |
+| Column A     | Column B       |
+| ------------ | -------------- |
+| short        | a longer value |
+| longer value | another value  |
 
 ## Links
 
-- Inline: `[text](url)`.
-- No bare URL in prose. Wrap `<url>` or use inline link syntax.
+- Inline links: `[text](url)`.
+- No bare URL in prose. Wrap it in `<>` or use inline link syntax.

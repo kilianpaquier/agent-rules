@@ -4,13 +4,15 @@ applyTo: "**/Dockerfile,**/Dockerfile.*"
 description: Dockerfile conventions
 globs: ["**/Dockerfile", "**/Dockerfile.*"]
 paths: ["**/Dockerfile", "**/Dockerfile.*"]
+trigger: glob
 ---
+
 # Dockerfile
 
 ## Stages
 
-- Always multi-stage build.
-- Label each stage: comment banner + named `AS <stage>`:
+- Always a multi-stage build.
+- Label each stage with a comment banner and a named `AS <stage>`:
 
 ```dockerfile
 #############################
@@ -20,23 +22,27 @@ FROM golang:1.23 AS build
 ```
 
 - Build stage: language-specific image.
-- Run stage: smallest viable image, order:
-  1. `scratch`: static binary, no syscalls need shared libs/CA certs.
-  2. `gcr.io/distroless/static-debian12:nonroot`: CA certs or minimal libc need (*e.g.* static binary HTTPS calls).
-  3. `alpine`: fallback, runtime env need (*e.g.* JRE for Java).
+- Run stage: smallest viable image, in order:
+  1. `scratch`: static binary needing no shared libs or CA certs.
+  2. `gcr.io/distroless/static-debian12:nonroot`: needs CA certs or minimal libc (*e.g.* a static binary making HTTPS calls).
+  3. `alpine`: fallback when a runtime environment is needed (*e.g.* a JRE for Java).
 
 ## Instructions
 
-- `WORKDIR /app` every stage.
+- `WORKDIR /app` in every stage.
 - `ARG` before first use.
-- Chain `RUN` with `&&` + `\`, not multi `RUN` layers.
-- Multi-file `COPY`: one path/line, `\` continuation.
-- JSON array syntax `ENTRYPOINT`: `ENTRYPOINT [ "/app/binary" ]`.
+- Chain `RUN` with `&&` and `\`, not multiple `RUN` layers.
+- Multi-file `COPY`: one path per line with `\` continuation.
+- JSON array syntax for `ENTRYPOINT`: `ENTRYPOINT [ "/app/binary" ]`.
 - `ENTRYPOINT` over `CMD` for binaries.
+- Non-root `USER` in the run stage (skip for `scratch` and `distroless:nonroot`, already non-root).
+- `.dockerignore` at the build context root, excluding VCS dirs, local env files, and build artifacts.
+- Copy dependency manifests (`go.mod`, `package.json`) before source, install deps, then copy source.
+  Keeps the layer cache valid across source-only changes.
 
 ## Labels
 
-OCI image spec labels. Group `authors`/`vendor` together, rest alphabetical:
+OCI image spec labels. Group `authors` and `vendor` together, rest alphabetical:
 
 ```dockerfile
 LABEL org.opencontainers.image.authors="name <email>"
@@ -52,7 +58,7 @@ LABEL org.opencontainers.image.url="..."
 
 ## Build args
 
-Standard build args, declare in build stage:
+Standard build args, declared in the build stage:
 
 ```dockerfile
 ARG GIT_COMMIT
@@ -60,4 +66,4 @@ ARG GIT_REF_NAME
 ARG VERSION=v0.0.0
 ```
 
-Go project: also `ARG CGO_ENABLED=0` in build stage.
+Go project: also `ARG CGO_ENABLED=0` in the build stage.

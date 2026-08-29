@@ -4,17 +4,19 @@ applyTo: "**/*.go"
 description: Go file conventions
 globs: ["**/*.go"]
 paths: ["**/*.go"]
+trigger: glob
 ---
+
 # Go
 
 ## Comments
 
-- GoDoc comment every exported ident (func, type, var, const).
-- Use `doc.go` files pkg-level docs.
+- GoDoc comment on every exported identifier (func, type, var, const).
+- Use `doc.go` for package-level docs.
 
 ### Example
 
-Single-line (most idents):
+Single-line (most identifiers):
 
 ```go
 // FunctionName does something with input and returns result.
@@ -34,7 +36,7 @@ Multiline (extra context needed, separate paragraphs with `//`):
 func FunctionName(input string) (string, error) { ... }
 ```
 
-`doc.go` (pkg-level doc):
+`doc.go` (package-level doc):
 
 ```go
 /*
@@ -52,16 +54,54 @@ Example:
 package mypkg
 ```
 
+## Concurrency
+
+- Every goroutine needs a cancellation path (`context.Context` or a done channel).
+- No naked `go` in a request path. Use `errgroup.Group` for fan-out and propagate the first error.
+- Go 1.22+ scopes loop variables per iteration. On older versions, copy the variable before capturing it.
+
 ## Context
 
-- `context.Context` always first param (after receiver), named `ctx`.
+- `context.Context` always first param (after the receiver), named `ctx`.
 
 ## Declarations
 
-- `:=` local vars. `var` only zero values, pkg-level decls, interface compliance checks.
-- Avoid named return values.
-- Avoid global `var` decls unless required.
+- `:=` for local vars. `var` only for zero values, package-level declarations, interface compliance checks.
+- Avoid named return values, except when a deferred call must set the returned error.
+- Avoid global `var` declarations unless required.
 - Avoid `init()`. Use constructor funcs instead.
+- `any` over `interface{}`.
+- Struct tags lowercase, snake_case field name, no spaces around `:` (*e.g.* `json:"created_at"`).
+
+## Errors
+
+- Wrap with `fmt.Errorf("small context information: %w", err)`. Never swallow an error.
+- Declare `var ErrFoo = errors.New("...")` only when a caller needs `errors.Is` or `errors.As`.
+- Error strings short, lowercase, no trailing punctuation.
+- Aggregate with `errors.Join(errs...)`.
+- Deferred cleanup returning an error (`Close`, `Rollback`, and similar): log it when a logger is in scope, otherwise ignore.
+  Propagate through a named return only when the failure loses data (*e.g.* a buffered writer `Close`).
+
+## Interfaces
+
+- Verify compliance at compile time: `var _ MyInterface = (*MyType)(nil)`
+
+## Linting
+
+- Targeted `//nolint:rulename` directives. Never bare `//nolint`.
+
+## Optimizations
+
+- Pre-allocate slices and maps when the final size is known: `make([]T, 0, n)` and `make(map[K]V, n)`.
+- Size unknown before the loop: declare no capacity (`var s []T`). Add `//nolint:prealloc` only when golangci-lint flags it.
+- Use `strings.Builder` or `bytes.Buffer` to assemble strings. Never concat with `+` in a loop.
+- Prefer `slices.*` and `maps.*` (stdlib, Go 1.21+) over a manual for-range.
+- Index-only range (`for i := range s`) when the value isn't needed, avoids an implicit copy.
+
+## Receivers
+
+- Pointer receiver when the method mutates state or the type is large.
+- Keep receivers consistent within a type.
 
 ## Struct literals
 
@@ -85,72 +125,4 @@ Config: pkg.Options{
 	Path:   "p",
 	Region: "r",
 },
-```
-
-## Errors
-
-- Wrap `fmt.Errorf("small context information: %w", err)`. Never swallow errors.
-- Declare `var ErrFoo = errors.New("...")` only when caller needs `errors.Is`/`errors.As`.
-- Error strings: short, lowercase, no trailing punctuation.
-- Aggregate multiple errors `errors.Join(errs...)`.
-
-## Interfaces
-
-- Concrete types default. Interface only when two+ distinct implementations exist.
-- Verify compliance compile time: `var _ MyInterface = (*MyType)(nil) // ensure interface is implemented`
-
-## Linting
-
-- Targeted `//nolint:rulename` directives. Never bare `//nolint`.
-
-## Optimizations
-
-- Pre-allocate slices/maps when final size known: `make([]T, 0, n)` and `make(map[K]V, n)`.
-- Size unknown before loop: declare no capacity (`var s []T`). Add `//nolint:prealloc` only when golangci-lint flags.
-- Use `strings.Builder` or `bytes.Buffer` assemble strings. Never concat `+` in loop.
-- Prefer `slices.*`/`maps.*` (stdlib, Go 1.21+) over manual for-range.
-- Index-only range (`for i := range s`) when value not needed, avoids implicit copy.
-
-## Receivers
-
-- Pointer receiver when method mutates state or type large.
-- Keep receivers consistent within type.
-
-## Libraries
-
-### Cobra CLI
-
-- CLI code dedicated pkg (*e.g.*, `internal/cobra/`). One file per command + matching `_test.go`.
-- Name constructors `{name}Cmd() *cobra.Command`. Shared state as params, not globals.
-- Wire subcommands single top-level `Execute()` func.
-- Always `RunE`, not `Run`.
-- Set `SilenceErrors: true` and `SilenceUsage: true` on root cmd. Handle error/usage printing manual.
-- `PersistentPreRunE` for cross-cutting setup (logger, working dir). `PreRunE` for command-specific validation.
-- `PersistentFlags()` for flags inherited by all subcommands. `Flags()` for command-local flags.
-- Enforce flag constraints `MarkFlagRequired()` and related `MarkFlags*` methods.
-- Flag names as pkg-level constants, reuse across files/tests.
-- No `viper`. Local helpers `getenv()` and `coalesce()`.
-  - `getenv` maps kebab-case flag name to `SCREAMING_SNAKE_CASE` env var
-  - `coalesce` returns first non-empty string. Use `coalesce(getenv(flagName), hardcodedDefault)` as flag default.
-
-#### Example
-
-```go
-func Execute() {
-	root := rootCmd()
-	root.AddCommand(fooCmd())
-
-	if err := root.Execute(); err != nil {
-		subcmd, _, _ := root.Find(os.Args[1:])
-		usage(root, subcmd, err) // print cmd usage for unknown flag / command errors
-		os.Exit(1) //nolint:revive
-	}
-}
-
-func rootCmd() *cobra.Command {
-	logLevel := "info"
-	cmd := &cobra.Command{ /* ... */ }
-	cmd.PersistentFlags().StringVar(&logLevel, flagLogLevel, coalesce(getenv(flagLogLevel), logLevel), "set logging level")
-	return cmd
-}
 ```
