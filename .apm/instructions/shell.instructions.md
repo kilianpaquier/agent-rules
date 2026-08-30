@@ -1,39 +1,96 @@
 ---
 alwaysApply: false
-applyTo: "**/*.sh,**/*.bash,**/*.zsh"
+applyTo: "**/*.*sh"
 description: Shell script conventions
-globs: ["**/*.sh", "**/*.bash", "**/*.zsh"]
-paths: ["**/*.sh", "**/*.bash", "**/*.zsh"]
+globs: ["**/*.*sh"]
+paths: ["**/*.*sh"]
 trigger: glob
 ---
 
 # Shell
 
-## Shebang & portability
+Rules for a script run as its own process.
 
-- Default `#!/bin/sh` (POSIX). Use `#!/bin/bash` or `#!/bin/zsh` only for a feature POSIX sh lacks.
-- POSIX sh: `[ ]` tests, `$()` substitution, no `local`, no `[[ ]]`, no `((...))`.
+## ZSH plugin
 
-## Error handling
+- Before writing a trap or an `exit`, look in the file's directory for a `*.plugin.zsh` that sources or autoloads it.
+- If there is one, the file runs as a function inside the user's shell, so read the ZSH plugin instructions and follow those instead on traps and `exit`.
+- A `#!/bin/sh` shebang does not rule that out, an autoloaded file keeps one.
 
-Bash scripts, add at the top:
+## Portability
 
-```sh
-set -euo pipefail
-```
+- Default `#!/bin/sh` (POSIX): `[ ]` tests, `$()` substitution, no `local`, no `[[ ]]`, no `((...))`, no `function`.
+- `#!/bin/bash` or `#!/bin/zsh` only for a feature POSIX sh lacks.
+- First line after the shebang: `set -e` (POSIX), `set -euo pipefail` (bash).
 
-POSIX scripts, add at the top:
+## Traps
 
-```sh
-set -e
-```
+- `mktemp` for temp files, never a fixed `/tmp` path.
+- The `EXIT` handler only cleans, no `$?` and no `exit`, the shell already carries the right status.
+- `INT` and `TERM` need a trap each, otherwise the signal does not stop the script, it resumes and cleans twice.
+
+## CLI
+
+- `while`/`case` loop, not `getopts`, which has no `--long-option`.
+- `-h` prints usage and succeeds, a parse error prints it and returns 2.
+- `exit` only at top level, functions `return`.
 
 ## Style
 
-- Quote every variable expansion. Leave one unquoted only for deliberate word splitting, with a comment saying so.
-- Early exit from a function: `return <code>`. From a script: `exit <code>`. Non-zero signals failure.
-- Function names `snake_case()`. No `function` keyword.
-- `mktemp` for temp files, never a fixed `/tmp` path.
-- `trap 'rm -rf "$tmpdir"' EXIT` when the script creates temp state.
-- Run shellcheck on every script. Fix all warnings before finishing.
-- Suppress a warning only with a targeted directive: `# shellcheck disable=SCxxxx`. Never bare `# shellcheck disable`.
+- Quote every expansion, unquoted only for deliberate word splitting, with a comment saying so.
+- Name functions `snake_case()`.
+- Non-zero signals failure, whether it comes from a `return` or an `exit`.
+- Run shellcheck on every script, fix all warnings before finishing.
+- Suppress a warning only as `# shellcheck disable=SCxxxx`, never bare.
+
+## Example
+
+```sh
+# shellcheck disable=SC3040
+(set -o pipefail >/dev/null 2>&1) && set -o pipefail
+
+red='\033[0;31m'
+no_color='\033[0m'
+
+error() {
+  printf "${red}ERROR${no_color} %s\n" "$1" >&2
+  return 1
+}
+
+usage() {
+  cat <<EOF >&2
+Usage: <name> [-v|--verbose] [--out=FILE]
+EOF
+}
+
+tmpdir=$(mktemp -d)
+cleanup() {
+  rm -rf "$tmpdir"
+}
+trap cleanup EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
+
+help=
+verbose=
+out=
+
+parse_arguments() {
+  while [ $# -gt 0 ]; do
+    case $1 in
+    -h | --help) usage; help=1; return 0 ;;
+    -v | --verbose) verbose=1; shift ;;
+    --out) out=$2; shift 2 ;;
+    --out=*) out=${1#*=}; shift ;;
+    *) usage; error "Unknown argument: $1"; return 2 ;;
+    esac
+  done
+}
+
+main() {
+  parse_arguments "$@" || return $?
+  [ -z "$help" ] || return 0
+}
+
+main "$@"
+```
