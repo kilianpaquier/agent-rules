@@ -11,12 +11,6 @@ trigger: glob
 
 Rules for a script run as its own process.
 
-## ZSH plugin
-
-- Before writing a trap or an `exit`, look in the file's directory for a `*.plugin.zsh` that sources or autoloads it.
-- If there is one, the file runs as a function inside the user's shell, so read the ZSH plugin instructions and follow those instead on traps and `exit`.
-- A `#!/bin/sh` shebang does not rule that out, an autoloaded file keeps one.
-
 ## Portability
 
 - Default `#!/bin/sh` (POSIX): `[ ]` tests, `$()` substitution, no `local`, no `[[ ]]`, no `((...))`, no `function`.

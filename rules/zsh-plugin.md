@@ -1,1 +1,0 @@
-../.apm/instructions/zsh-plugin.instructions.md
