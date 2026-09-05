@@ -14,28 +14,29 @@ Language-neutral rules. A language instruction file overrides these where they c
 
 ## Design
 
-- No defensive checks for structurally impossible inputs or states. Handle real error returns only.
-- No backwards-compat shims or stubs for removed code.
-- No premature abstraction. Concrete type first. Interface only when two or more implementations exist.
+- Never write a defensive check for a structurally impossible input or state. Handle only the errors a function's signature can return.
+- Never keep a backwards-compat shim or stub for removed code.
+- Never abstract prematurely. Reach for a concrete type first, and add an interface only when two or more implementations exist.
 
 ## Safety
 
-- Validate input crossing a trust boundary (user input, network payload, file content).
-  This covers untrusted data, not the internal invariants under Design.
-- Parameterized queries only. Never build SQL, shell, or path strings by concatenation.
+- Validate input crossing a trust boundary (user input, network payload, file content), meaning untrusted data rather than the internal invariants under Design.
+- Use parameterized queries only. Never build SQL, shell, or path strings by concatenation.
 
 ## Dependencies
 
 - Check the stdlib and existing dependencies before adding one.
-- No new dependency for what a few lines of code do.
+- Never add a dependency for a single function's worth of behavior.
 
 ## Style
 
-- Never put a regex in code unless the user validated it.
+- Never put a regex running on untrusted input, or using backtracking constructs, in code unless the user validated it.
+- An anchored literal pattern needs no round-trip.
 
 ## Testing
 
 - Test behavior, not implementation.
-- No tests for trivial or unreachable code paths.
-- Keep tests minimal and focused: one behavior per test.
-- Mark test phases with `// Arrange`, `// Act`, `// Assert` comments (drop the comment when a phase has no steps).
+- Never test a getter, a constant, or an unreachable code path.
+- Assert one behavior per test.
+- Mark test phases with `Arrange`, `Act`, `Assert` comments, written in the file's own comment syntax (`// Arrange`, `# Arrange`, `<!-- Arrange -->`).
+- Drop the phase comment when a phase has no steps.

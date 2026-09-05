@@ -11,9 +11,9 @@ trigger: glob
 
 ## Structure
 
-- One `#` heading per doc.
+- Write one `#` heading per doc.
 - Never skip a heading level (`##` directly under `#`, not `###`).
-- Blank line before and after every heading, code block, list, and table.
+- Leave a blank line before and after every heading, code block, list, and table.
 
 ## Lists
 
@@ -32,7 +32,7 @@ echo hello
 
 - Align `|` vertically.
 - Pad cell content to align columns.
-- Header separator row: `-` repeated to match column width.
+- Repeat `-` in the header separator row to match the column width.
 
 Example:
 
@@ -43,5 +43,5 @@ Example:
 
 ## Links
 
-- Inline links: `[text](url)`.
-- No bare URL in prose. Wrap it in `<>` or use inline link syntax.
+- Write inline links as `[text](url)`.
+- Never leave a bare URL in prose. Wrap it in `<>` or use inline link syntax.

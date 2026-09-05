@@ -11,22 +11,22 @@ trigger: glob
 
 ## Structure
 
-- CLI code in a dedicated package (*e.g.* `internal/cobra/`). One file per command plus a matching `_test.go`.
+- Keep CLI code in a dedicated package (*e.g.* `internal/cobra/`). Write one file per command plus a matching `_test.go`.
 - Name constructors `{name}Cmd() *cobra.Command`. Pass shared state as params, not globals.
 - Wire subcommands in a single top-level `Execute()` func.
 
 ## Commands
 
-- Always `RunE`, not `Run`.
+- Always use `RunE`, not `Run`.
 - Set `SilenceErrors: true` and `SilenceUsage: true` on the root command. Handle error and usage printing manually.
-- `PersistentPreRunE` for cross-cutting setup (logger, working dir). `PreRunE` for command-specific validation.
+- Use `PersistentPreRunE` for cross-cutting setup (logger, working dir), and `PreRunE` for command-specific validation.
 
 ## Flags
 
-- `PersistentFlags()` for flags inherited by all subcommands. `Flags()` for command-local flags.
+- Use `PersistentFlags()` for flags inherited by all subcommands, and `Flags()` for command-local flags.
 - Enforce flag constraints with `MarkFlagRequired()` and the related `MarkFlags*` methods.
-- Flag names as package-level constants, reused across files and tests.
-- No `viper`. Use local helpers `getenv()` and `coalesce()`.
+- Declare flag names as package-level constants, reused across files and tests.
+- Never use `viper`. Use the local helpers `getenv()` and `coalesce()`.
   - `getenv` maps a kebab-case flag name to a `SCREAMING_SNAKE_CASE` env var.
   - `coalesce` returns the first non-empty string. Use `coalesce(getenv(flagName), hardcodedDefault)` as a flag default.
 

@@ -16,7 +16,7 @@ trigger: glob
 
 ## Services
 
-Order keys, omit unneeded:
+Order the keys like this, omitting the ones you don't need:
 
 1. `build` / `image`
 2. `container_name`
@@ -29,16 +29,16 @@ Order keys, omit unneeded:
 
 ## Images
 
-- Never `:latest`. Pin an explicit version (*e.g.* `postgres:16`).
+- Never use `:latest`. Pin an explicit version (*e.g.* `postgres:16`).
 
 ## Restart policy
 
-- `restart: unless-stopped` for long-running services.
-- `restart: on-failure` for one-shot and migration containers.
+- Set `restart: unless-stopped` on long-running services.
+- Set `restart: on-failure` on one-shot and migration containers.
 
 ## Environment variables
 
-- Map syntax for `environment:`:
+- Write `environment:` in map syntax:
 
 ```yaml
 environment:
@@ -62,5 +62,5 @@ depends_on:
 
 ## Volumes
 
-- Named volumes (top-level `volumes:`) for persistent data.
-- Bind mounts for dev source files.
+- Use named volumes (top-level `volumes:`) for persistent data.
+- Use bind mounts for dev source files.

@@ -14,16 +14,16 @@ trigger: glob
 Use [To Be Continuous](https://gitlab.com/to-be-continuous) components when a tool or workflow is needed.
 Each component's `inputs` are in its template file.
 
-Template URL: `https://gitlab.com/to-be-continuous/{component}/-/raw/main/templates/gitlab-ci-{component}.yml`
+Build the template URL as `https://gitlab.com/to-be-continuous/{component}/-/raw/main/templates/gitlab-ci-{component}.yml`.
 
-Exception: `semantic-release` is aliased to `semrel`.
+One exception, `semantic-release` is aliased to `semrel`.
 
 Components: `ansible`, `aws`, `azure`, `bash`, `docker`, `gcloud`, `golang`, `gradle`, `helm`, `maven`, `node`, `pre-commit`, `python`, `renovate`, `rust`, `semantic-release`, `sonar`, `terraform`.
 
 ## Includes
 
-- `include: - component:` for external templates, over `project:`, `remote:`, and `template:`.
-- `inputs:` passes params to the component.
+- Use `include: - component:` for external templates, over `project:`, `remote:`, and `template:`.
+- Pass params to the component through `inputs:`.
 - Pin refs to a tag:
 
 ```yaml
@@ -32,11 +32,11 @@ Components: `ansible`, `aws`, `azure`, `bash`, `docker`, `gcloud`, `golang`, `gr
     some-input: value
 ```
 
-- `include: - local:` only for pipeline files in the same repo.
+- Use `include: - local:` only for pipeline files in the same repo.
 
 ## Job key ordering
 
-Order (omit unneeded):
+Order the keys like this, omitting the ones you don't need:
 
 1. `extends`
 2. `stage`
@@ -56,23 +56,36 @@ Order (omit unneeded):
 
 ## Jobs
 
-- Names `kebab-case`, with `:` as namespace separator (*e.g.* `semantic-release:dry-run`).
-- `needs: []` for jobs that must run immediately without waiting for prior stages.
-- `interruptible: true` globally via `default:`. Override with `interruptible: false` on release jobs.
+- Name jobs `kebab-case`, using `:` as the namespace separator (*e.g.* `semantic-release:dry-run`).
+- Set `needs: []` on jobs that must run immediately without waiting for prior stages.
+- Set `interruptible: true` globally through `default:`. Override it with `interruptible: false` on release jobs.
 
 ## Variables
 
-- Names `SCREAMING_SNAKE_CASE`.
+- Name variables `SCREAMING_SNAKE_CASE`.
 - Never hardcode secrets. Use masked or protected CI/CD variables.
 
 ## Rules
 
-- `rules:` with `if`/`when` pairs, over `only:`/`except:`.
-- Explicit `when: never` for blocked cases. End with a `when: on_success` fallback:
+- Write `rules:` with `if`/`when` pairs, over `only:`/`except:`.
+- Block a case with an explicit `when: never`.
+- End with `when: on_success` only when the job should run in every remaining context.
+- End with `when: never` for an opt-in job (deploy, release), so it stays off in unmatched pipelines.
+
+Always-on job, blocked on merge requests:
 
 ```yaml
 rules:
-  - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     when: never
   - when: on_success
+```
+
+Opt-in job, running only on the default branch:
+
+```yaml
+rules:
+  - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    when: on_success
+  - when: never
 ```

@@ -11,7 +11,7 @@ trigger: glob
 
 ## Stages
 
-- Always a multi-stage build.
+- Always write a multi-stage build.
 - Label each stage with a comment banner and a named `AS <stage>`:
 
 ```dockerfile
@@ -21,28 +21,27 @@ trigger: glob
 FROM golang:1.23 AS build
 ```
 
-- Build stage: language-specific image.
-- Run stage: smallest viable image, in order:
+- Build on a language-specific image.
+- Run on the smallest viable image, picked in this order:
   1. `scratch`: static binary needing no shared libs or CA certs.
   2. `gcr.io/distroless/static-debian12:nonroot`: needs CA certs or minimal libc (*e.g.* a static binary making HTTPS calls).
   3. `alpine`: fallback when a runtime environment is needed (*e.g.* a JRE for Java).
 
 ## Instructions
 
-- `WORKDIR /app` in every stage.
-- `ARG` before first use.
-- Chain `RUN` with `&&` and `\`, not multiple `RUN` layers.
-- Multi-file `COPY`: one path per line with `\` continuation.
-- JSON array syntax for `ENTRYPOINT`: `ENTRYPOINT [ "/app/binary" ]`.
-- `ENTRYPOINT` over `CMD` for binaries.
-- Non-root `USER` in the run stage (skip for `scratch` and `distroless:nonroot`, already non-root).
-- `.dockerignore` at the build context root, excluding VCS dirs, local env files, and build artifacts.
-- Copy dependency manifests (`go.mod`, `package.json`) before source, install deps, then copy source.
-  Keeps the layer cache valid across source-only changes.
+- Set `WORKDIR /app` in every stage.
+- Declare `ARG` before its first use.
+- Chain `RUN` with `&&` and `\`, rather than stacking multiple `RUN` layers.
+- Write a multi-file `COPY` with one path per line and a `\` continuation.
+- Write `ENTRYPOINT` in JSON array syntax: `ENTRYPOINT [ "/app/binary" ]`.
+- Prefer `ENTRYPOINT` over `CMD` for binaries.
+- Set a non-root `USER` in the run stage (skip it for `scratch` and `distroless:nonroot`, already non-root).
+- Keep a `.dockerignore` at the build context root, excluding VCS dirs, local env files, and build artifacts.
+- Copy dependency manifests (`go.mod`, `package.json`) before source, install deps, then copy source, which keeps the layer cache valid across source-only changes.
 
 ## Labels
 
-OCI image spec labels. Group `authors` and `vendor` together, rest alphabetical:
+Use the OCI image spec labels. Group `authors` and `vendor` together, and keep the rest alphabetical:
 
 ```dockerfile
 LABEL org.opencontainers.image.authors="name <email>"
@@ -58,7 +57,7 @@ LABEL org.opencontainers.image.url="..."
 
 ## Build args
 
-Standard build args, declared in the build stage:
+Declare the standard build args in the build stage:
 
 ```dockerfile
 ARG GIT_COMMIT
@@ -66,4 +65,4 @@ ARG GIT_REF_NAME
 ARG VERSION=v0.0.0
 ```
 
-Go project: also `ARG CGO_ENABLED=0` in the build stage.
+On a Go project, also declare `ARG CGO_ENABLED=0` in the build stage.

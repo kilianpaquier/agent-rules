@@ -40,6 +40,9 @@ Rules for a script run as its own process.
 ## Example
 
 ```sh
+#!/bin/sh
+set -e
+
 # shellcheck disable=SC3040
 (set -o pipefail >/dev/null 2>&1) && set -o pipefail
 

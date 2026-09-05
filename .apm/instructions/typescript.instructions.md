@@ -12,19 +12,19 @@ trigger: glob
 ## Functions & exports
 
 - Export functions as arrows: `export const fn = (...) => { }`.
-- Named exports only, no default.
-- File names `kebab-case`.
+- Use named exports only, never a default.
+- Name files `kebab-case`, unless the project's framework convention says otherwise (React and Next.js components).
 
 ## Types
 
-- `interface` for a public contract (object, class shape).
-- `type` for aliases and unions.
-- Enum values SCREAMING_SNAKE_CASE strings.
-- Never `any`. Use `unknown` and narrow.
+- Use `interface` for a public contract (object, class shape).
+- Use `type` for aliases and unions.
+- Write enum values as SCREAMING_SNAKE_CASE strings.
+- Never use `any`. Use `unknown` and narrow it.
 
 ## Async
 
-- `async`/`await` over `.then()` chains.
+- Prefer `async`/`await` over `.then()` chains.
 - Never float a promise. Await it, return it, or mark it `void` deliberately.
 - Every `await` in a failure-capable path needs rejection handling.
 
@@ -34,18 +34,19 @@ trigger: glob
 
 ## Style
 
-- No semicolons (ESLint/Prettier `semi: false`).
-- Always braces for `if`, `else`, `for`, `while`. No single-statement inline.
-- No labeled statements, labeled `break`/`continue`, or goto-style control flow.
+- Match the project's ESLint or Prettier config wherever it disagrees with this section. These are the defaults for a new project.
+- Never write semicolons (ESLint/Prettier `semi: false`).
+- Always brace `if`, `else`, `for`, and `while`. Never inline a single statement.
+- Never use a labeled statement, a labeled `break`/`continue`, or goto-style control flow.
 
 ## Imports
 
 - Sort alphabetically within each group (ESLint `sort-imports`).
-- No default import from a local module.
+- Never default-import from a local module.
 
 ## Comments
 
-- JSDoc on every exported function (params, return type, thrown errors).
+- Write JSDoc on every exported function (params, return type, thrown errors).
 
 ### Example
 
@@ -66,9 +67,9 @@ export const functionName = (param1: string, param2: number): string => { ... }
 ## Tests
 
 - Match the project's framework (Bun test, Jest, Vitest).
-- File pattern `*.test.ts`.
-- Structure with `describe` and `test`.
-- Mock with `spyOn` and framework teardown in `afterEach` (*e.g.* `mock.restore()` Bun, `jest.restoreAllMocks()` Jest, `vi.restoreAllMocks()` Vitest).
+- Name test files `*.test.ts`.
+- Structure them with `describe` and `test`.
+- Mock with `spyOn` and put the framework teardown in `afterEach` (*e.g.* `mock.restore()` Bun, `jest.restoreAllMocks()` Jest, `vi.restoreAllMocks()` Vitest).
 
 ### Example
 
