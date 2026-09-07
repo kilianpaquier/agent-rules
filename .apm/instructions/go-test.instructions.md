@@ -47,7 +47,7 @@ import (
 )
 
 func TestReadJSON(t *testing.T) {
-  t.Run("invalid json returns error", func(t *testing.T) {
+  t.Run("error_invalid_json", func(t *testing.T) {
     // Arrange
     path := filepath.Join(t.TempDir(), "bad.json")
     if err := os.WriteFile(path, []byte("{invalid}"), 0o644); err != nil {
@@ -83,7 +83,7 @@ import (
 )
 
 func TestReadJSON(t *testing.T) {
-  t.Run("invalid json returns error", func(t *testing.T) {
+  t.Run("error_invalid_json", func(t *testing.T) {
     // Arrange
     path := filepath.Join(t.TempDir(), "bad.json")
     require.NoError(t, os.WriteFile(path, []byte("{invalid}"), 0o644))
