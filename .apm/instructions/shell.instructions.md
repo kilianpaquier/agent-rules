@@ -15,7 +15,8 @@ Rules for a script run as its own process.
 
 - Default `#!/bin/sh` (POSIX): `[ ]` tests, `$()` substitution, no `local`, no `[[ ]]`, no `((...))`, no `function`.
 - `#!/bin/bash` or `#!/bin/zsh` only for a feature POSIX sh lacks.
-- First line after the shebang: `set -e` (POSIX), `set -euo pipefail` (bash).
+- First line after the shebang: `set -eu` (POSIX), `set -euo pipefail` (bash).
+- With `-u`, expand an optional positional or variable as `${2:-}`, never bare.
 
 ## Traps
 
@@ -41,7 +42,8 @@ Rules for a script run as its own process.
 
 ```sh
 #!/bin/sh
-set -e
+
+set -eu
 
 # shellcheck disable=SC3040
 (set -o pipefail >/dev/null 2>&1) && set -o pipefail
