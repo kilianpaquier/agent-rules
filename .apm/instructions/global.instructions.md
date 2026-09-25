@@ -52,7 +52,7 @@ trigger: always_on
 
 ## Tools
 
-- Always use `curl` or `wget` instead of default harness's web fetch tool.
+- Never use `curl` or `wget`. Use the harness's web fetch tool.
 - Never text-search for a code symbol. Use the language server (definitions, references, symbols) or the codebase MCP.
 - When no language server, index, or MCP is available, fall back to text search and say which method you used.
 - Plain text search stays fine for non-symbol content (a string in config, a line in a log).
