@@ -12,22 +12,12 @@ trigger: glob
 
 Language-neutral rules. A language instruction file overrides these where they conflict.
 
-## Design
-
-- Never write a defensive check for a structurally impossible input or state. Handle only the errors a function's signature can return.
-- Never keep a backwards-compat shim or stub for removed code.
-
 ## Safety
 
-- Validate input crossing a trust boundary (user input, network payload, file content), meaning untrusted data rather than the internal invariants under Design.
+- Validate input crossing a trust boundary (user input, network payload, file content). Internal invariants need no check.
 - Use parameterized queries only. Never build SQL, shell, or path strings by concatenation.
 - Never ship a regex that runs on untrusted input or uses backtracking constructs unless the user validated it.
 - An anchored literal pattern needs no validation.
-
-## Dependencies
-
-- Check the stdlib and existing dependencies before adding one.
-- Never add a dependency for a single function's worth of behavior.
 
 ## Testing
 
