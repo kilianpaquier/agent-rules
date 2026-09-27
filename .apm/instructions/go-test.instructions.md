@@ -11,13 +11,14 @@ trigger: glob
 
 ## Package naming
 
-- Always use the external test package: `package foo_test`.
+- Default to the external test package `package foo_test`.
 - Use `package foo` only when the project already does. Check existing test files first.
 - When a directory has both styles, match the file you're extending. New standalone test files default to `package foo_test`.
 
 ## Structure
 
 - Use `t.Run("description", func(t *testing.T) { ... })` subtests for each test case.
+- Name subtests snake_case, prefixed `success_` or `error_` (*e.g.* `success_empty_input`, `error_invalid_json`).
 - Never introduce a table-driven test (struct slice plus range) unless asked.
 - When extending a file that already uses one, match it.
 - Use `t.Cleanup(fn)` for teardown and state restore, over `defer` in subtests.
@@ -38,31 +39,31 @@ Stdlib:
 package files_test
 
 import (
-  "os"
-  "path/filepath"
-  "strings"
-  "testing"
+	"os"
+	"path/filepath"
+	"strings"
+	"testing"
 
-  "gitlab.com/org/project/internal/files"
+	"gitlab.com/org/project/internal/files"
 )
 
 func TestReadJSON(t *testing.T) {
-  t.Run("error_invalid_json", func(t *testing.T) {
-    // Arrange
-    path := filepath.Join(t.TempDir(), "bad.json")
-    if err := os.WriteFile(path, []byte("{invalid}"), 0o644); err != nil {
-      t.Fatalf("write fixture: %v", err)
-    }
+	t.Run("error_invalid_json", func(t *testing.T) {
+		// Arrange
+		path := filepath.Join(t.TempDir(), "bad.json")
+		if err := os.WriteFile(path, []byte("{invalid}"), 0o644); err != nil {
+			t.Fatalf("write fixture: %v", err)
+		}
 
-    // Act
-    var result map[string]any
-    err := files.ReadJSON(path, &result)
+		// Act
+		var result map[string]any
+		err := files.ReadJSON(path, &result)
 
-    // Assert
-    if err == nil || !strings.Contains(err.Error(), "unmarshal") {
-      t.Errorf("got %v, want an error containing \"unmarshal\"", err)
-    }
-  })
+		// Assert
+		if err == nil || !strings.Contains(err.Error(), "unmarshal") {
+			t.Errorf("got %v, want an error containing \"unmarshal\"", err)
+		}
+	})
 }
 ```
 
@@ -72,28 +73,28 @@ Testify:
 package files_test
 
 import (
-  "os"
-  "path/filepath"
-  "testing"
+	"os"
+	"path/filepath"
+	"testing"
 
-  "github.com/stretchr/testify/assert"
-  "github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
-  "gitlab.com/org/project/internal/files"
+	"gitlab.com/org/project/internal/files"
 )
 
 func TestReadJSON(t *testing.T) {
-  t.Run("error_invalid_json", func(t *testing.T) {
-    // Arrange
-    path := filepath.Join(t.TempDir(), "bad.json")
-    require.NoError(t, os.WriteFile(path, []byte("{invalid}"), 0o644))
+	t.Run("error_invalid_json", func(t *testing.T) {
+		// Arrange
+		path := filepath.Join(t.TempDir(), "bad.json")
+		require.NoError(t, os.WriteFile(path, []byte("{invalid}"), 0o644))
 
-    // Act
-    var result map[string]any
-    err := files.ReadJSON(path, &result)
+		// Act
+		var result map[string]any
+		err := files.ReadJSON(path, &result)
 
-    // Assert
-    assert.ErrorContains(t, err, "unmarshal")
-  })
+		// Assert
+		assert.ErrorContains(t, err, "unmarshal")
+	})
 }
 ```

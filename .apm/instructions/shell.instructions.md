@@ -13,29 +13,29 @@ Rules for a script run as its own process.
 
 ## Portability
 
-- Default `#!/bin/sh` (POSIX): `[ ]` tests, `$()` substitution, no `local`, no `[[ ]]`, no `((...))`, no `function`.
-- `#!/bin/bash` or `#!/bin/zsh` only for a feature POSIX sh lacks.
-- First line after the shebang: `set -eu` (POSIX), `set -euo pipefail` (bash).
+- Default to `#!/bin/sh` (POSIX). Use `[ ]` tests and `$()` substitution, never `local`, `[[ ]]`, `((...))`, or `function`.
+- Use `#!/bin/bash` or `#!/bin/zsh` only for a feature POSIX sh lacks.
+- Make `set -eu` (POSIX) or `set -euo pipefail` (bash) the first statement after the shebang.
 - With `-u`, expand an optional positional or variable as `${2:-}`, never bare.
 
 ## Traps
 
-- `mktemp` for temp files, never a fixed `/tmp` path.
-- The `EXIT` handler only cleans, no `$?` and no `exit`, the shell already carries the right status.
-- `INT` and `TERM` need a trap each, otherwise the signal does not stop the script, it resumes and cleans twice.
+- Use `mktemp` for temp files, never a fixed `/tmp` path.
+- Keep the `EXIT` handler to cleanup only, with no `$?` and no `exit`. The shell already carries the right status.
+- Trap `INT` and `TERM` each with an `exit`. Otherwise the signal doesn't stop the script, it resumes and cleans twice.
 
 ## CLI
 
-- `while`/`case` loop, not `getopts`, which has no `--long-option`.
-- `-h` prints usage and succeeds, a parse error prints it and returns 2.
-- `exit` only at top level, functions `return`.
+- Parse arguments with a `while`/`case` loop, not `getopts`, which has no `--long-option`.
+- Make `-h` print usage and succeed. Make a parse error print usage and return 2.
+- Call `exit` only at top level. Functions `return`.
 
 ## Style
 
-- Quote every expansion, unquoted only for deliberate word splitting, with a comment saying so.
+- Quote every expansion. Leave one unquoted only for deliberate word splitting, with a comment saying so.
 - Name functions `snake_case()`.
-- Non-zero signals failure, whether it comes from a `return` or an `exit`.
-- Run shellcheck on every script, fix all warnings before finishing.
+- Signal failure with a non-zero status, whether from a `return` or an `exit`.
+- Run shellcheck on every script and fix all warnings before finishing.
 - Suppress a warning only as `# shellcheck disable=SCxxxx`, never bare.
 
 ## Example
@@ -58,7 +58,7 @@ error() {
 
 usage() {
   cat <<EOF >&2
-Usage: <name> [-v|--verbose] [--out=FILE]
+Usage: <name> [-q|--quiet] [-x|--verbose] [--name=NAME]
 EOF
 }
 
@@ -71,16 +71,15 @@ trap 'exit 130' INT
 trap 'exit 143' TERM
 
 help=
-verbose=
-out=
+name=world
 
 parse_arguments() {
   while [ $# -gt 0 ]; do
     case $1 in
     -h | --help) usage; help=1; return 0 ;;
-    -v | --verbose) verbose=1; shift ;;
-    --out) out=$2; shift 2 ;;
-    --out=*) out=${1#*=}; shift ;;
+    -x | --verbose) set -x; shift ;;
+    --name) name=$2; shift 2 ;;
+    --name=*) name=${1#*=}; shift ;;
     *) usage; error "Unknown argument: $1"; return 2 ;;
     esac
   done
@@ -89,6 +88,8 @@ parse_arguments() {
 main() {
   parse_arguments "$@" || return $?
   [ -z "$help" ] || return 0
+
+  echo "Hello, $name"
 }
 
 main "$@"

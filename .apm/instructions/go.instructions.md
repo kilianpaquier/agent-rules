@@ -58,7 +58,7 @@ package mypkg
 
 - Every goroutine needs a cancellation path (`context.Context` or a done channel).
 - Never write a naked `go` in a request path. Use `errgroup.Group` for fan-out and propagate the first error.
-- Go 1.22+ scopes loop variables per iteration. On older versions, copy the variable before capturing it.
+- Check the `go` directive in `go.mod`. Below 1.22, copy a loop variable before a closure captures it.
 
 ## Context
 
@@ -67,9 +67,9 @@ package mypkg
 ## Declarations
 
 - Use `:=` for local vars. Keep `var` for zero values, package-level declarations, and interface compliance checks.
-- Avoid named return values, except when a deferred call must set the returned error.
-- Avoid global `var` declarations unless required.
-- Avoid `init()`. Use constructor funcs instead.
+- Never use named return values, except when a deferred call must set the returned error.
+- Never declare mutable package-level state. Sentinel errors, compile-time checks, and precompiled regexps are fine.
+- Never write `init()`. Use a constructor func.
 - Prefer `any` over `interface{}`.
 - Write struct tags lowercase, with a snake_case field name and no spaces around `:` (*e.g.* `json:"created_at"`).
 

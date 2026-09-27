@@ -27,6 +27,8 @@ Order the keys like this, omitting the ones you don't need:
 7. `depends_on`
 8. `healthcheck`
 
+Put any unlisted key after these, alphabetically.
+
 ## Images
 
 - Never use `:latest`. Pin an explicit version (*e.g.* `postgres:16`).
@@ -42,7 +44,7 @@ Order the keys like this, omitting the ones you don't need:
 
 ```yaml
 environment:
-  POSTGRES_PASSWORD: secret
+  POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
   POSTGRES_USER: app
 ```
 

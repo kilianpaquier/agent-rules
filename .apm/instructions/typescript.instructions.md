@@ -1,9 +1,9 @@
 ---
 alwaysApply: false
-applyTo: "**/*.ts,**/*.tsx,**/*.js"
+applyTo: "**/*.{ts,tsx,js,jsx,mjs}"
 description: TypeScript / JavaScript conventions
-globs: ["**/*.ts", "**/*.tsx", "**/*.js"]
-paths: ["**/*.ts", "**/*.tsx", "**/*.js"]
+globs: ["**/*.{ts,tsx,js,jsx,mjs}"]
+paths: ["**/*.{ts,tsx,js,jsx,mjs}"]
 trigger: glob
 ---
 

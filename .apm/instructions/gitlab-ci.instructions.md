@@ -16,6 +16,8 @@ Each component's `inputs` are in its template file.
 
 Build the template URL as `https://gitlab.com/to-be-continuous/{component}/-/raw/main/templates/gitlab-ci-{component}.yml`.
 
+Include it as `$CI_SERVER_FQDN/to-be-continuous/{component}/gitlab-ci-{component}@<tag>`.
+
 One exception, `semantic-release` is aliased to `semrel`.
 
 Components: `ansible`, `aws`, `azure`, `bash`, `docker`, `gcloud`, `golang`, `gradle`, `helm`, `maven`, `node`, `pre-commit`, `python`, `renovate`, `rust`, `semantic-release`, `sonar`, `terraform`.
