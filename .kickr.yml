@@ -4,10 +4,9 @@ version: 1
 exclude:
   - code-of-conduct
   - contributing
+  - pre-commit
+  - renovate
   - security
-gitlab:
-  options:
-    - kickr
 license: mit
 maintainers:
   - name: u.kilianpaquier

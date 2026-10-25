@@ -5,8 +5,6 @@
 <!-- BEGIN_KICKR_BADGES -->
 [![GitLab Issues](https://img.shields.io/gitlab/issues/open/kilianpaquier%2Fagent-rules?gitlab_url=https%3A%2F%2Fgitlab.com&style=for-the-badge)](https://gitlab.com/kilianpaquier/agent-rules/-/work_items)
 [![GitLab License](https://img.shields.io/gitlab/license/kilianpaquier%2Fagent-rules?gitlab_url=https%3A%2F%2Fgitlab.com&style=for-the-badge)](https://gitlab.com/kilianpaquier/agent-rules/-/blob/HEAD/LICENSE)
-[![GitLab CICD](https://img.shields.io/gitlab/pipeline-status/kilianpaquier%2Fagent-rules?gitlab_url=https%3A%2F%2Fgitlab.com&branch=main&style=for-the-badge)](https://gitlab.com/kilianpaquier/agent-rules/-/pipelines?ref=main)
-[![Plumber Score](https://img.shields.io/endpoint?url=https%3A%2F%2Fscore.getplumber.io%2Fgitlab.com%2Fkilianpaquier%2Fagent-rules.json&style=for-the-badge)](https://score.getplumber.io/gitlab.com/kilianpaquier/agent-rules)
 <!-- END_KICKR_BADGES -->
 
 </div>
