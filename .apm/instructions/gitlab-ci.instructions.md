@@ -12,13 +12,11 @@ trigger: glob
 ## To Be Continuous
 
 Use [To Be Continuous](https://gitlab.com/to-be-continuous) components when a tool or workflow is needed.
-Each component's `inputs` are in its template file.
-
-Build the template URL as `https://gitlab.com/to-be-continuous/{component}/-/raw/main/templates/gitlab-ci-{component}.yml`.
+Read a component's `inputs` in its template, at `https://gitlab.com/to-be-continuous/{component}/-/raw/main/templates/gitlab-ci-{component}.yml`.
 
 Include it as `$CI_SERVER_FQDN/to-be-continuous/{component}/gitlab-ci-{component}@<tag>`.
 
-One exception, `semantic-release` is aliased to `semrel`.
+For `semantic-release`, use `semrel` as `{component}` in both the URL and the include.
 
 Components: `ansible`, `aws`, `azure`, `bash`, `docker`, `gcloud`, `golang`, `gradle`, `helm`, `maven`, `node`, `pre-commit`, `python`, `renovate`, `rust`, `semantic-release`, `sonar`, `terraform`.
 

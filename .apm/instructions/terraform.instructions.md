@@ -14,7 +14,7 @@ trigger: glob
 - Give a root module these standard files: `versions.tf`, `providers.tf`, `variables.tf`, `main.tf`, `outputs.tf`.
 - Give a child module the same set minus `providers.tf`, it inherits provider config from its caller.
 - Declare `required_providers` in a child module's `versions.tf`.
-- Add `data_and_locals.tf` (not `locals.tf`) only when data sources and locals together outgrow the resources in `main.tf`, otherwise keep them there.
+- Add `data_and_locals.tf` (not `locals.tf`) only when data sources and locals together take more lines than the resources in `main.tf`, otherwise keep them there.
 - Add `imports.tf` for Terraform import blocks.
 
 ## Naming

@@ -1,9 +1,9 @@
 ---
 alwaysApply: false
-applyTo: "**/*.{go,ts,tsx,js,jsx,mjs,py,rs,java,tf,tofu},**/*.*sh"
+applyTo: "**/*.{go,ts,tsx,js,jsx,mjs,py,rs,java,tf,tofu},**/*.*sh,**/bin/*"
 description: Language-neutral code conventions
-globs: ["**/*.{go,ts,tsx,js,jsx,mjs,py,rs,java,tf,tofu}", "**/*.*sh"]
-paths: ["**/*.{go,ts,tsx,js,jsx,mjs,py,rs,java,tf,tofu}", "**/*.*sh"]
+globs: ["**/*.{go,ts,tsx,js,jsx,mjs,py,rs,java,tf,tofu}", "**/*.*sh", "**/bin/*"]
+paths: ["**/*.{go,ts,tsx,js,jsx,mjs,py,rs,java,tf,tofu}", "**/*.*sh", "**/bin/*"]
 trigger: glob
 # Keep the three glob keys identical.
 ---
@@ -15,8 +15,8 @@ Language-neutral rules. A language instruction file overrides these where they c
 ## Safety
 
 - Validate input crossing a trust boundary (user input, network payload, file content). Internal invariants need no check.
-- Use parameterized queries only. Never build SQL, shell, or path strings by concatenation.
-- Never ship a regex that runs on untrusted input or uses backtracking constructs unless the user validated it.
+- Use parameterized queries only. Never build SQL, shell commands, or paths by concatenating untrusted input. Use parameters, argument arrays, or a path-join function.
+- Never ship a regex that runs on untrusted input or uses backtracking constructs unless the user reviewed and approved that regex.
 - An anchored literal pattern needs no validation.
 
 ## Testing

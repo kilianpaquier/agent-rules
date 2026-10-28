@@ -18,7 +18,7 @@ trigger: glob
 ## Commands
 
 - Always use `RunE`, not `Run`.
-- Set `SilenceErrors: true` and `SilenceUsage: true` on the root command. Handle error and usage printing manually.
+- Set `SilenceErrors: true` and `SilenceUsage: true` on the root command. Print the error, and the usage only for unknown flag or command errors, from `Execute()` (see `usage` in the example).
 - Use `PersistentPreRunE` for cross-cutting setup (logger, working dir), and `PreRunE` for command-specific validation.
 
 ## Flags
@@ -26,7 +26,7 @@ trigger: glob
 - Use `PersistentFlags()` for flags inherited by all subcommands, and `Flags()` for command-local flags.
 - Enforce flag constraints with `MarkFlagRequired()` and the related `MarkFlags*` methods.
 - Declare flag names as package-level constants, reused across files and tests.
-- Never use `viper`. Use the local helpers `getenv()` and `coalesce()`.
+- Never use `viper`. Use the package helpers `getenv()` and `coalesce()`. Write them in the CLI package when missing.
   - `getenv` maps a kebab-case flag name to a `SCREAMING_SNAKE_CASE` env var.
   - `coalesce` returns the first non-empty string. Use `coalesce(getenv(flagName), hardcodedDefault)` as a flag default.
 
@@ -50,4 +50,7 @@ func rootCmd() *cobra.Command {
 	cmd.PersistentFlags().StringVar(&logLevel, flagLogLevel, coalesce(getenv(flagLogLevel), logLevel), "set logging level")
 	return cmd
 }
+
+// usage prints err, then cmd usage when err is an unknown flag or command.
+func usage(root, cmd *cobra.Command, err error) { /* ... */ }
 ```
