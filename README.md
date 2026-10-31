@@ -17,7 +17,7 @@ and an [**Agent Package Manager**](https://microsoft.github.io/apm/producer/auth
 
 ## Instructions
 
-- Global AI agent behavior (scope, safety, process, design, dependencies, tools, responses, prose, code style, commits, code review, environment)
+- Global AI agent behavior (scope, safety, process, design, dependencies, tools, responses, prose, code style, commits, git, code review, environment)
 - Code (language-neutral safety, testing)
 - Docker
 - Docker Compose

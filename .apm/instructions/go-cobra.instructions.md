@@ -26,6 +26,8 @@ trigger: glob
 - Use `PersistentFlags()` for flags inherited by all subcommands, and `Flags()` for command-local flags.
 - Enforce flag constraints with `MarkFlagRequired()` and the related `MarkFlags*` methods.
 - Declare flag names as package-level constants, reused across files and tests.
+- Declare a flag's name constant in the file of the command that declares the flag.
+- In help text, name what a command or flag acts on as the user knows it (*e.g.* "project configuration"), not the file that stores it (`config.yml`).
 - Never use `viper`. Use the package helpers `getenv()` and `coalesce()`. Write them in the CLI package when missing.
   - `getenv` maps a kebab-case flag name to a `SCREAMING_SNAKE_CASE` env var.
   - `coalesce` returns the first non-empty string. Use `coalesce(getenv(flagName), hardcodedDefault)` as a flag default.

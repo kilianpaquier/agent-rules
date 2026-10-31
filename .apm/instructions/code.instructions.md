@@ -26,4 +26,6 @@ Language-neutral rules. A language instruction file overrides these where they c
 - Assert one behavior per test.
 - Mark test phases with `Arrange`, `Act`, `Assert` comments, written in the file's own comment syntax (`// Arrange`, `# Arrange`, `<!-- Arrange -->`).
 - Drop the phase comment when a phase has no steps.
+- Build multi-line inputs (config, fixtures, mocks) in `Arrange`.
+- Inline a short value in the `Act` call only when it fits on one line (*e.g.* a context, a literal).
 - When a test or check fails, fix the code. Never delete, skip, or loosen a test or assertion to make it pass.

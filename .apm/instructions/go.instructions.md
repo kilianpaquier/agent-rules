@@ -72,6 +72,7 @@ package mypkg
 - Never write `init()`. Use a constructor func.
 - Prefer `any` over `interface{}`.
 - Write struct tags lowercase, with a snake_case field name and no spaces around `:` (*e.g.* `json:"created_at"`).
+- Prefer unexported helpers. Export a func only when non-test code outside its package calls it.
 
 ## Errors
 

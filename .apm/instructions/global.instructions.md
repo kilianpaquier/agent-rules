@@ -26,8 +26,8 @@ trigger: always_on
 ## Scope
 
 - Never create doc files (README, CHANGELOG, and similar) unless asked.
-- Never run a git action (commit, push, MR) unless asked.
 - Never add an unsolicited feature, refactor, or abstraction. Do exactly what was asked.
+- Never add a setting or option that neither the request nor a rule file names (*e.g.* `allow_failure`, a retry).
 - Prefer editing an existing file over creating one.
 - Never reformat, reorder, or rename lines the task doesn't touch, even when they break these rules.
 
@@ -64,6 +64,8 @@ trigger: always_on
 - Never split code into extra functions or files for style alone.
 - Never write a defensive check for a structurally impossible input or state. Handle only the errors a function's signature can return.
 - Never keep a backwards-compat shim or stub for removed code.
+- Before choosing a design that reads from the network, count its requests.
+- Prefer one bulk request (archive, batch endpoint) over one request per file or item.
 
 ## Dependencies
 
@@ -76,7 +78,6 @@ trigger: always_on
 - Never text-search for a code symbol. Use the language server (definitions, references, symbols) or the codebase MCP.
 - When no language server, index, or MCP is available, fall back to text search and say which method you used.
 - Plain text search stays fine for non-symbol content (a string in config, a line in a log).
-- Run read-only git freely (`log`, `diff`, `show`, `status`, `blame`). Mutating git (commit, push, rebase, reset) needs an explicit ask.
 - Run `node` and `python` for the project's own test, build, or lint command. Don't use them as general-purpose scripting tools unless asked.
 
 ## Code style
@@ -140,11 +141,20 @@ Every rule here applies to every word you write. The subsections add rules for o
 - Use the Conventional Commits format: `type(scope): subject`.
 - Write the subject imperative and lowercase, with no trailing period.
 - Add a scope only when it narrows meaning (component, package, file area).
-- Write the subject line only, with no prose body. Trailers (`Signed-off-by`, `Co-Authored-By`, `BREAKING CHANGE:`) are fine.
+- Write the subject line only, with no prose body. Trailers (`Signed-off-by`, `Co-Authored-By`) are fine.
+- When a commit removes or renames public API, ask whether to mark it breaking (`!` or a `BREAKING CHANGE:` trailer). Never mark it otherwise.
 - Put the why in the merge request description.
+- Add a co-author trailer naming the acting agent (*e.g.* `Co-Authored-By: Claude <noreply@anthropic.com>` for Claude Code) only to commits made by yourself, never to the user's own commit or one you only reviewed.
+
+## Git
+
+- Run read-only git freely (`log`, `diff`, `show`, `status`, `blame`).
+- Run a mutating git action (commit, push, rebase, reset, MR) only when asked.
+- When asked to commit, commit on the current branch.
+- Never create, switch, or delete a branch unless asked, even when a harness default says to branch first.
+- Before a partial commit, check that the staged set holds every file the change touches, generated and fixture files included (*e.g.* under `testdata/`), and no unrelated file.
 - Always sign commits with `-S`, or rely on `commit.gpgsign` when already configured.
 - Add `--signoff`, using the configured **git** `user.name` and `user.email`.
-- Add a co-author trailer naming the acting agent (*e.g.* `Co-Authored-By: Claude <noreply@anthropic.com>` for Claude Code) only to commits made by yourself, never to the user's own commit or one you only reviewed.
 
 ## Code review
 
