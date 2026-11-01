@@ -25,9 +25,9 @@ Rules for a script run as its own process. Skip them for a sourced file (zsh plu
 
 - Default to `#!/bin/sh` (POSIX). Use `[ ]` tests and `$()` substitution, never `local`, `[[ ]]`, `((...))`, or `function`.
 - Use `#!/bin/bash` or `#!/bin/zsh` only for a feature POSIX sh lacks.
-- Make `set -eu` (POSIX) or `set -euo pipefail` (bash) the first statement after the shebang.
+- Make `set -e` (POSIX) or `set -eo pipefail` (bash) the first statement after the shebang.
 - In POSIX sh, add `pipefail` only when the shell has it, as in the example.
-- With `-u`, expand an optional positional or variable as `${2:-}`, never bare.
+- Add `-u` only when an unset variable would reach a destructive command unchecked (*e.g.* `rm -rf "$dir/"`), and then expand optional ones as `${2:-}`.
 
 ## Errors
 
@@ -78,7 +78,7 @@ Rules for a script run as its own process. Skip them for a sourced file (zsh plu
 ```sh
 #!/bin/sh
 
-set -eu
+set -e
 
 # shellcheck disable=SC3040
 (set -o pipefail >/dev/null 2>&1) && set -o pipefail
