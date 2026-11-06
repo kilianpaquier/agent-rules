@@ -5,7 +5,6 @@ description: Language-neutral code conventions
 globs: ["**/*.{go,ts,tsx,js,jsx,mjs,py,rs,java,tf,tofu}", "**/*.*sh", "**/bin/*"]
 paths: ["**/*.{go,ts,tsx,js,jsx,mjs,py,rs,java,tf,tofu}", "**/*.*sh", "**/bin/*"]
 trigger: glob
-# Keep the three glob keys identical.
 ---
 
 # Code
@@ -28,5 +27,4 @@ Language-neutral rules. A language instruction file overrides these where they c
 - Drop the phase comment when a phase has no steps.
 - Build multi-line inputs (config, fixtures, mocks) in `Arrange`.
 - Inline a short value in the `Act` call only when it fits on one line (*e.g.* a context, a literal).
-- When fixing a bug, add a test that fails without the fix.
 - When a test or check fails, fix the code. Never delete, skip, or loosen a test or assertion to make it pass.

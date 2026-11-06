@@ -5,7 +5,6 @@ description: Shell script conventions
 globs: ["**/*.*sh", "**/bin/*"]
 paths: ["**/*.*sh", "**/bin/*"]
 trigger: glob
-# Keep the three glob keys identical.
 ---
 
 # Shell

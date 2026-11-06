@@ -13,16 +13,7 @@ Read it before changing a manifest or a frontmatter key.
 
 ## Frontmatter
 
-Each runtime reads its own keys, so every rule file carries all of them:
+Each runtime reads its own keys, so every rule file carries all of them.
+Copy a sibling's frontmatter.
 
-- `paths` for Claude Code, `applyTo` for Copilot, `globs` and `alwaysApply` for Cursor, `trigger` and `globs` for Antigravity.
-- `applyTo`, `globs` and `paths` match the same files, with `applyTo` as one comma-separated string and the other two as arrays.
-- `global.instructions.md` has no glob key, because a rule without one loads at session start.
 - Antigravity silently drops a rule whose `trigger` is missing or unknown, so keep `always_on` or `glob`.
-
-## Writing a rule
-
-- A rule reaches every runtime, so name a runtime-only mechanism (*e.g.* a skill, plan mode) only next to a neutral fallback.
-- Refer to another rule file by its role ("the language rule files"), never by filename, since each runtime installs it under another name.
-- When an agent or the user finds a rule that reads two ways, reword that rule, not only the case at hand.
-- Check every edited rule against the global Prose rules before finishing.

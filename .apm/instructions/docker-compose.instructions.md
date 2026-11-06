@@ -29,10 +29,6 @@ Order the keys like this, omitting the ones you don't need:
 
 Put any unlisted key after these, alphabetically.
 
-## Images
-
-- Never use `:latest`. Pin an explicit version (*e.g.* `postgres:16`).
-
 ## Restart policy
 
 - Set `restart: unless-stopped` on long-running services.
