@@ -25,13 +25,19 @@ Rules for a script run as its own process. Skip them for a sourced file (zsh plu
 
 - Default to `#!/bin/sh` (POSIX). Use `[ ]` tests and `$()` substitution, never `local`, `[[ ]]`, `((...))`, or `function`.
 - Use `#!/bin/bash` or `#!/bin/zsh` only for a feature POSIX sh lacks.
-- Make `set -e` (POSIX) or `set -eo pipefail` (bash) the first statement after the shebang.
+- Make `set -e` (POSIX) or `set -eo pipefail` (bash, zsh) the first statement after the shebang.
 - In POSIX sh, add `pipefail` only when the shell has it, as in the example.
-- Add `-u` only when an unset variable would reach a destructive command unchecked (*e.g.* `rm -rf "$dir/"`), and then expand optional ones as `${2:-}`.
+- Add `-u` only when an unset variable would reach a destructive command unchecked (*e.g.* `rm -rf "$dir/"`), and expand optional variables as `${2:-}` only then.
+- Without `-u`, write a plain `$var`, never a `:-` default, since an unset variable already expands to empty.
 
 ## Errors
 
 - Signal failure with a non-zero status, whether from a `return` or an `exit`.
+- Return 2 for a usage error, never 64 (EX_USAGE), and 1 for a failure no other code names.
+- Mirror the shell for a required command, with 127 when it's missing and 126 when it isn't executable.
+- Propagate a status your own function set (2, 126, 127, 65 to 78) with `|| return $?`, never `|| return 1`.
+- Use a `sysexits.h` code (65 to 78) when one names the failure (*e.g.* 66 for a missing input file, 78 for a bad config).
+- Never return 128+N outside the `INT` and `TERM` traps.
 - Call `exit` only at top level. Functions `return`.
 - `set -e` is off inside a function called from `if`, `while`, `!`, `||` or `&&`. Check each command that can fail there with `|| { error "..."; return 1; }`.
 - Make `error` print to stderr and return 1, so `error "..." || failed=1` records a failure without stopping a loop.
@@ -48,7 +54,7 @@ Rules for a script run as its own process. Skip them for a sourced file (zsh plu
 - Parse arguments with a `while`/`case` loop, not `getopts`, which has no `--long-option`.
 - Make `-h` print usage and succeed. Make a parse error print usage and return 2.
 - Check an option has a value before `shift 2`. Shifting past the last argument aborts a POSIX sh.
-- Check external commands with `required_command` (see the example) at the start of `main`.
+- Check external commands with `required_command` in `main`, right after argument parsing (see the example).
 - Offer `-n, --dry-run` on a command that changes remote or shared state. Run every read step, skip only the writes.
 
 ## Usage
@@ -70,7 +76,8 @@ Rules for a script run as its own process. Skip them for a sourced file (zsh plu
 
 - Quote every expansion. Leave one unquoted only for deliberate word splitting, with a comment saying so.
 - Name functions `snake_case()`.
-- Run shellcheck on every script and fix all warnings before finishing.
+- Use `if` for a condition that mixes `||` and `&&`. Keep `a || b` for a single guard-or-fail line.
+- Run shellcheck on every script, when installed, and fix all warnings before finishing.
 - Suppress a warning only as `# shellcheck disable=SCxxxx`, never bare.
 
 ## Example
@@ -185,7 +192,7 @@ trap 'exit 143' TERM
 required_command() {
   if ! command -v "$1" >/dev/null 2>&1; then
     error "Required command '$1' wasn't found. Please install it."
-    return 1
+    return 127
   fi
 }
 

@@ -41,7 +41,7 @@ FROM golang:1.23 AS build
 
 ## Labels
 
-Use the OCI image spec labels. Group `authors` and `vendor` together, and keep the rest alphabetical:
+Use the OCI image spec labels. Put `authors` and `vendor` first, then the rest alphabetically:
 
 ```dockerfile
 LABEL org.opencontainers.image.authors="name <email>"
