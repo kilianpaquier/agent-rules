@@ -48,6 +48,15 @@ apm marketplace add kilianpaquier/agent-rules
 apm install agent-rules@agent-rules -g --target <claude|copilot|...>
 ```
 
+**Clone and script (Claude Code, Copilot and Devin only)**:
+```sh
+git clone https://gitlab.com/kilianpaquier/agent-rules.git
+./agent-rules/scripts/install.sh
+```
+
+The script replaces the `*.instructions.md` files in the global instructions directory of each agent whose config directory exists (`~/.claude`, `~/.copilot` or `~/.devin`),
+and skips the others.
+
 ## Compatibility table
 
 > [!note]
