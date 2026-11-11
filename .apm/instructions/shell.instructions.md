@@ -9,7 +9,9 @@ trigger: glob
 
 # Shell
 
-Rules for a script run as its own process. Skip them for a sourced file (zsh plugin, rc file).
+Follow the [**Google** Shell Style Guide](https://google.github.io/styleguide/shellguide.html) alongside these rules.
+These rules override it on any conflict.
+They apply to a script run as its own process. Skip them for a sourced file (zsh plugin, rc file).
 
 ## Layout
 
@@ -65,18 +67,14 @@ Rules for a script run as its own process. Skip them for a sourced file (zsh plu
 
 ## Comments
 
-- Write a header on every function that isn't both obvious and short ([Google Shell Style Guide](https://google.github.io/styleguide/shellguide.html#function-comments)).
-- Start with the description, then `Globals:`, `Arguments:`, `Outputs:` and `Returns:`, each only when relevant.
-- Separate the description and each field with an empty `#` line, and indent field entries by 2 spaces.
+- Separate the description and each field of a function header with an empty `#` line, and indent field entries by 2 spaces.
 - Document a unit action contract once, above the dispatcher or the first unit function.
 - Skip the header on unit functions that contract already covers.
 
 ## Style
 
-- Quote every expansion. Leave one unquoted only for deliberate word splitting, with a comment saying so.
-- Name functions `snake_case()`.
+- Leave an expansion unquoted only for deliberate word splitting, with a comment saying so.
 - Use `if` for a condition that mixes `||` and `&&`. Keep `a || b` for a single guard-or-fail line.
-- Run shellcheck on every script, when installed, and fix all warnings before finishing.
 - Suppress a warning only as `# shellcheck disable=SCxxxx`, never bare.
 
 ## Example

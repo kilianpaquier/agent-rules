@@ -9,6 +9,9 @@ trigger: glob
 
 # Terraform / OpenTofu
 
+Follow the [**Terraform** style guide](https://developer.hashicorp.com/terraform/language/style) alongside these rules.
+These rules override it on any conflict.
+
 ## Module file layout
 
 - Give a root module these standard files: `versions.tf`, `providers.tf`, `variables.tf`, `main.tf`, `outputs.tf`.
@@ -20,11 +23,9 @@ trigger: glob
 ## Naming
 
 - When a module holds a single resource of a type, label it `"default"`.
-- Name variables, locals, and outputs `snake_case`.
 
 ## Block ordering
 
-- Put `for_each` or `count` first in resource and module blocks.
 - Put `source` next in module blocks, right after `for_each` or `count`.
 - Keep the remaining args alphabetical.
 
@@ -37,9 +38,9 @@ trigger: glob
 
 - Every `variable` needs a `type` and a `description`.
 - Every `output` needs a `description`.
+- Mark sensitive inputs with `sensitive = true`.
 - Order the fields in a `variable`: `type`, `default`, `description` (then optional: `nullable`, `sensitive`, `validation`).
 - Never hardcode a value that belongs in a variable (account IDs, regions, CIDR blocks, domain names).
-- Mark sensitive inputs with `sensitive = true`.
 
 ## Example
 

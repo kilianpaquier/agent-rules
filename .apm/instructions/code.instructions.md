@@ -27,4 +27,8 @@ Language-neutral rules. A language instruction file overrides these where they c
 - Drop the phase comment when a phase has no steps.
 - Build multi-line inputs (config, fixtures, mocks) in `Arrange`.
 - Inline a short value in the `Act` call only when it fits on one line (*e.g.* a context, a literal).
-- When a test or check fails, fix the code. Never delete, skip, or loosen a test or assertion to make it pass.
+
+## Comments
+
+- Prefer an if/else or a switch over a ternary when a branch needs its own comment.
+- Put that comment directly above the branch it documents.

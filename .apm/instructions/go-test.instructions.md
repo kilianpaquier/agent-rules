@@ -9,6 +9,10 @@ trigger: glob
 
 # Go tests
 
+Follow the [**Uber** Go Style Guide](https://github.com/uber-go/guide/blob/master/style.md)
+and the `go` skill alongside these rules.
+These rules override them on any conflict, table-driven tests included.
+
 ## Package naming
 
 - Default to the external test package `package foo_test`.
@@ -25,7 +29,6 @@ trigger: glob
 - When extending a file that already uses one, match it.
 - Use `t.Cleanup(fn)` for teardown and state restore, over `defer` in subtests.
 - Use `t.TempDir()` for file I/O (cleaned up automatically).
-- Mark test helpers with `t.Helper()` as the first statement.
 - From Go 1.24 (`go` directive in `go.mod`), call `t.Context()` inside each subtest on its own `t`, never through a `ctx` built from the parent `t`.
 - Prefer literal fixtures (`testdata/` files, inline values) over builder helpers.
 - When a helper is needed, make it build exactly one item. Never feed it maps or lists describing several items.
@@ -34,8 +37,7 @@ trigger: glob
 
 ## Assertions
 
-- Match the project's existing test library.
-- When no library is present, use the stdlib `testing` only.
+- Match the project's existing test library. When no library is present, use the stdlib `testing` only.
 - Use `require.` (or an equivalent fail-fast) for preconditions, and `assert.` for the assertions themselves.
 
 ### Example

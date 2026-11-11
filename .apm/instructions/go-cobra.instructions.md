@@ -9,6 +9,9 @@ trigger: glob
 
 # Go Cobra CLI
 
+Follow the [**Cobra** user guide](https://github.com/spf13/cobra/blob/main/site/content/user_guide.md) alongside these rules.
+These rules override it on any conflict.
+
 ## Structure
 
 - Keep CLI code in a dedicated package (*e.g.* `internal/cobra/`). Write one file per command plus a matching `_test.go`.
@@ -23,7 +26,6 @@ trigger: glob
 
 ## Flags
 
-- Use `PersistentFlags()` for flags inherited by all subcommands, and `Flags()` for command-local flags.
 - Enforce flag constraints with `MarkFlagRequired()` and the related `MarkFlags*` methods.
 - Declare flag names as package-level constants, reused across files and tests.
 - Declare a flag's name constant in the file of the command that declares the flag.

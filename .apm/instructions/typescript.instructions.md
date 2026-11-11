@@ -9,6 +9,9 @@ trigger: glob
 
 # TypeScript / JavaScript
 
+Follow the [**Google** TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html) alongside these rules.
+These rules override it on any conflict.
+
 ## Functions & exports
 
 - Export functions as arrows: `export const fn = (...) => { }`.
@@ -17,8 +20,6 @@ trigger: glob
 
 ## Types
 
-- Use `interface` for a public contract (object, class shape).
-- Use `type` for aliases and unions.
 - Write enum values as SCREAMING_SNAKE_CASE strings.
 - Never use `any`. Use `unknown` and narrow it.
 
@@ -27,10 +28,6 @@ trigger: glob
 - Prefer `async`/`await` over `.then()` chains.
 - Never float a promise. Await it, return it, or mark it `void` deliberately.
 - Every `await` in a failure-capable path needs rejection handling.
-
-## Errors
-
-- Always throw errors, never return them as values.
 
 ## Style
 
@@ -42,7 +39,6 @@ trigger: glob
 ## Imports
 
 - Sort alphabetically within each group (ESLint `sort-imports`).
-- Never default-import from a local module.
 
 ## Comments
 
@@ -67,8 +63,7 @@ export const functionName = (param1: string, param2: number): string => { ... }
 ## Tests
 
 - Match the project's framework (Bun test, Jest, Vitest).
-- Name test files `*.test.ts`.
-- Structure them with `describe` and `test`.
+- Name test files `*.test.ts`. Structure them with `describe` and `test`.
 - Mock with `spyOn` and put the framework teardown in `afterEach` (*e.g.* `mock.restore()` Bun, `jest.restoreAllMocks()` Jest, `vi.restoreAllMocks()` Vitest).
 
 ### Example

@@ -9,6 +9,10 @@ trigger: glob
 
 # GitLab CI
 
+Follow the [**GitLab** CI/CD YAML reference](https://docs.gitlab.com/ci/yaml/)
+and the [**GitLab** CI/CD variables](https://docs.gitlab.com/ci/variables/) alongside these rules.
+These rules override them on any conflict.
+
 ## To Be Continuous
 
 Use [To Be Continuous](https://gitlab.com/to-be-continuous) components when a tool or workflow is needed.
@@ -57,7 +61,6 @@ Order the keys like this, omitting the ones you don't need:
 ## Jobs
 
 - Name jobs `kebab-case`, using `:` as the namespace separator (*e.g.* `semantic-release:dry-run`).
-- Set `needs: []` on jobs that must run immediately without waiting for prior stages.
 - Set `interruptible: true` globally through `default:`. Override it with `interruptible: false` on release jobs.
 
 ## Variables

@@ -9,6 +9,10 @@ trigger: glob
 
 # Dockerfile
 
+Follow the **Docker** [building best practices](https://docs.docker.com/build/building/best-practices/)
+and the `docker-build-strategies` skill alongside these rules.
+These rules override them on any conflict.
+
 ## Stages
 
 - Always write a multi-stage build.
@@ -31,13 +35,9 @@ FROM golang:1.23 AS build
 
 - Set `WORKDIR /app` in every stage.
 - Declare `ARG` before its first use.
-- Chain `RUN` with `&&` and `\`, rather than stacking multiple `RUN` layers.
 - Write a multi-file `COPY` with one path per line and a `\` continuation.
-- Write `ENTRYPOINT` in JSON array syntax: `ENTRYPOINT [ "/app/binary" ]`.
-- Prefer `ENTRYPOINT` over `CMD` for binaries.
+- Write `ENTRYPOINT` in JSON array syntax: `ENTRYPOINT [ "/app/binary" ]`. Prefer it over `CMD` for binaries.
 - Set a non-root `USER` in the run stage (skip it for `scratch` and `distroless:nonroot`, already non-root).
-- Keep a `.dockerignore` at the build context root, excluding VCS dirs, local env files, and build artifacts.
-- Copy dependency manifests (`go.mod`, `package.json`) before source, install deps, then copy source, which keeps the layer cache valid across source-only changes.
 
 ## Labels
 

@@ -9,6 +9,11 @@ trigger: glob
 
 # Go
 
+Follow [**Effective Go**](https://go.dev/doc/effective_go), the [**Uber** Go Style Guide](https://github.com/uber-go/guide/blob/master/style.md),
+the [**Go** Code Review Comments](https://go.dev/wiki/CodeReviewComments)
+and the `go` skill alongside these rules.
+These rules override them on any conflict.
+
 ## Comments
 
 - Write a GoDoc comment on every exported identifier (func, type, var, const).
@@ -58,28 +63,15 @@ package mypkg
 
 - Every goroutine needs a cancellation path (`context.Context` or a done channel).
 - Never write a naked `go` in a request path. Use `errgroup.Group` for fan-out and propagate the first error.
-- Check the `go` directive in `go.mod`. Below 1.22, copy a loop variable before a closure captures it.
-
-## Context
-
-- Pass `context.Context` as the first param, after the receiver, and name it `ctx`.
 
 ## Declarations
 
-- Use `:=` for local vars. Keep `var` for zero values, package-level declarations, and interface compliance checks.
 - Never use named return values, except when a deferred call must set the returned error.
-- Never declare mutable package-level state. Sentinel errors, compile-time checks, and precompiled regexps are fine.
-- Never write `init()`. Use a constructor func.
-- Prefer `any` over `interface{}`.
 - Write struct tags lowercase, with a snake_case field name and no spaces around `:` (*e.g.* `json:"created_at"`).
 - Prefer unexported helpers. Export a func only when non-test code outside its package calls it.
 
 ## Errors
 
-- Wrap with `fmt.Errorf("<what you were doing>: %w", err)`. Never swallow an error.
-- Declare `var ErrFoo = errors.New("...")` only when a caller needs `errors.Is` or `errors.As`.
-- Write error strings lowercase, one clause, with no trailing punctuation.
-- Aggregate with `errors.Join(errs...)`.
 - When deferred cleanup returns an error (`Close`, `Rollback`, and similar), log it if a logger is in scope, otherwise ignore it.
 - Propagate it through a named return only when the failure loses data (*e.g.* a buffered writer `Close`).
 
@@ -93,25 +85,14 @@ package mypkg
 
 ## Optimizations
 
-- Pre-allocate slices and maps when the final size is known: `make([]T, 0, n)` and `make(map[K]V, n)`.
 - When the size isn't known before the loop, declare no capacity (`var s []T`). Add `//nolint:prealloc` only when golangci-lint flags it.
 - Use `strings.Builder` or `bytes.Buffer` to assemble strings. Never concat with `+` in a loop.
-- Prefer `slices.*` and `maps.*` (stdlib, Go 1.21+) over a manual for-range.
-- Range over the index only (`for i := range s`) when the value isn't needed, it avoids an implicit copy.
-
-## Receivers
-
-- Use a pointer receiver when the method mutates state, or when the type contains a `sync` type or a large array.
-- Keep receivers consistent within a type.
 
 ## Struct literals
 
 - When it fits on one line, keep it on one line with fields comma-separated.
-- When it doesn't fit, put every field on its own line (gofmt aligns the colons).
-- Never group 2+ fields on a wrapped line.
-- Never partial-wrap a field list.
-- When a nested struct also doesn't fit, break it level by level with one `Field: &Type{` opener per line.
-- Never cram multiple opening braces onto one line.
+- When it doesn't fit, put every field on its own line. Never group 2+ fields on a wrapped line, never partial-wrap a field list.
+- When a nested struct also doesn't fit, break it level by level with one `Field: &Type{` opener per line. Never cram multiple opening braces onto one line.
 - When a slice needs breaking, put one element per line. Each element can stay compact on its own line when it fits.
 
 ```go

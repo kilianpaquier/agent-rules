@@ -9,6 +9,10 @@ trigger: glob
 
 # Docker Compose
 
+Follow the [**Compose** specification](https://github.com/compose-spec/compose-spec/blob/main/spec.md)
+and the `docker-compose-patterns` skill alongside these rules.
+These rules override them on any conflict, the `compose.yaml` filename included.
+
 ## File
 
 - Prefer the `docker-compose.yml` filename. `compose.yml` is fine too.
@@ -57,8 +61,3 @@ depends_on:
   migrate:
     condition: service_completed_successfully
 ```
-
-## Volumes
-
-- Use named volumes (top-level `volumes:`) for persistent data.
-- Use bind mounts for dev source files.
