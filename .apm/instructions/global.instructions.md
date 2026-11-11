@@ -67,6 +67,11 @@ trigger: always_on
 - When you're blocked or uncertain, say so and ask. Never invent an API, flag, or file path to fill a gap.
 - Never silence a lint or type error (`//nolint`, `@ts-ignore`, `any`) to get a check green. Suppress only a confirmed false positive that a language rule allows or the user agreed to.
 - When the harness gives you a plan file and you start a new plan, overwrite it, never append.
+- When the user asks for no edits, diagnose only and list the fix options.
+- When fixing a bug, write the regression test first and watch it fail for the reported reason.
+- After 3 failed fix attempts, stop and report what each one showed.
+- Never skip, delete or loosen a test or an assertion to turn a check green.
+- Ask before a fix that edits an existing test or assertion, or that changes a public contract (API, data format, config default).
 
 ### Verification
 
