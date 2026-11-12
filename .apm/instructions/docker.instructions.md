@@ -22,7 +22,7 @@ These rules override them on any conflict.
 #############################
 #        STAGE BUILD        #
 #############################
-FROM golang:1.23 AS build
+FROM golang:1.23.4 AS build
 ```
 
 - Build on a language-specific image.
@@ -37,7 +37,7 @@ FROM golang:1.23 AS build
 - Declare `ARG` before its first use.
 - Write a multi-file `COPY` with one path per line and a `\` continuation.
 - Write `ENTRYPOINT` in JSON array syntax: `ENTRYPOINT [ "/app/binary" ]`. Prefer it over `CMD` for binaries.
-- Set a non-root `USER` in the run stage (skip it for `scratch` and `distroless:nonroot`, already non-root).
+- Set a non-root `USER` in the run stage, numeric on `scratch` (`USER 65534`). Skip it on `distroless:nonroot`, already non-root.
 
 ## Labels
 

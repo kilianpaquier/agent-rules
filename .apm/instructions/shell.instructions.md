@@ -29,7 +29,7 @@ They apply to a script run as its own process. Skip them for a sourced file (zsh
 - Make `set -e` (POSIX) or `set -eo pipefail` (bash, zsh) the first statement after the shebang.
 - In POSIX sh, add `pipefail` only when the shell has it, as in the example.
 - Add `-u` only when an unset variable would reach a destructive command unchecked (*e.g.* `rm -rf "$dir/"`), and expand optional variables as `${2:-}` only then.
-- Without `-u`, write a plain `$var`, never a `:-` default, since an unset variable already expands to empty.
+- Without `-u`, write a plain `$var`, never an empty default (`${var:-}`), since an unset variable already expands to empty.
 
 ## Errors
 
@@ -97,7 +97,7 @@ red='\033[0;31m'
 no_color='\033[0m'
 
 error() {
-  printf "${red}ERROR${no_color} %s\n" "$1" >&2
+  printf '%bERROR%b %s\n' "$red" "$no_color" "$1" >&2
   return 1
 }
 

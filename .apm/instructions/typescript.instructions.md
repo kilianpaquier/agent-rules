@@ -27,11 +27,11 @@ These rules override it on any conflict.
 
 - Prefer `async`/`await` over `.then()` chains.
 - Never float a promise. Await it, return it, or mark it `void` deliberately.
-- Every `await` in a failure-capable path needs rejection handling.
+- Catch a rejection where the code can recover or add context, otherwise let it propagate.
+- Catch every rejection at an entry point (top-level `await`, event handler, route handler).
 
 ## Style
 
-- Match the project's ESLint or Prettier config wherever it disagrees with this section. These are the defaults for a new project.
 - Never write semicolons (ESLint/Prettier `semi: false`).
 - Always brace `if`, `else`, `for`, and `while`. Never inline a single statement.
 - Never use a labeled statement, a labeled `break`/`continue`, or goto-style control flow.

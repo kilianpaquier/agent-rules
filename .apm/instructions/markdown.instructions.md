@@ -21,7 +21,7 @@ These rules override them on any conflict.
 ## Lists
 
 - Use `-` for unordered lists, not `*` or `+`.
-- Use `1.` for ordered lists.
+- Number ordered lists `1.`, `2.`, `3.`.
 
 ## Tables
 

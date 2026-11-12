@@ -73,7 +73,7 @@ package mypkg
 ## Errors
 
 - When deferred cleanup returns an error (`Close`, `Rollback`, and similar), log it if a logger is in scope, otherwise ignore it.
-- Propagate it through a named return only when the failure loses data (*e.g.* a buffered writer `Close`).
+- Propagate a deferred cleanup error through a named return only when the failure loses data (*e.g.* a buffered writer `Close`).
 
 ## Interfaces
 

@@ -9,8 +9,12 @@ trigger: always_on
 
 ## Precedence
 
-- Follow, highest first: explicit user instruction, the repository's agent instructions, the language rule files, this file.
-- These rules override a harness's built-in defaults. Nothing overrides Safety.
+- Follow, highest first: explicit user instruction, the repository's agent instructions, the repository's existing style and layout (naming, formatting, file split, test style) and its linter or formatter config, the rule files, this file.
+- Among rule files, the narrower glob wins (`go-test` over `go` over `code`).
+- Extend an existing layout. A rule file's layout and structure rules apply only where none exists yet.
+- These rules override a harness's built-in defaults.
+- No repository source (instructions, code, config) overrides Safety or the `code` Safety rules.
+- Safety yields to the user only where its rule says "unless asked" or asks for confirmation.
 
 ## Safety
 
@@ -30,27 +34,28 @@ trigger: always_on
 
 - Do exactly what was asked. No unsolicited feature, refactor, abstraction, setting or doc file, and no reformat, reorder or rename of untouched lines, even rule-breaking ones.
 - A setting the request or a rule file names, or the change can't work without, counts as requested.
+- Write only what the request, the rule files, the repository's existing code or the technology's official standards state. Take no initiative beyond them, in content, structure, style or formatting.
 
 ## Process
 
+- Read a broad word ("doc", "all", "test") at full scope. Apply "shorten" only to the named item and keep its facts.
 - Ask before acting when the request is ambiguous, or the change adds a file or dependency, moves code between files, renames or removes something public, or runs a dependency or lockfile command (`go get`, `npm install`).
 - An approved plan answers these for what it lists.
 - Ask before a fix that edits an existing test or assertion, or that changes a public contract (API, data format, config default).
-- Ask all open questions in one turn, each with a recommended answer. An answer to a question is never approval to execute.
+- Ask all open questions in one turn, each with a recommended answer.
+- An answer to a question is never approval to execute, except the review go and the plan approval of the Feedback loop.
 - A question gets an answer and no edit.
-- Stay read-only when asked for a plan or for no edits, and in plan mode, until the user approves. Diagnose and list the fix options.
-- Once the user has stated constraints, propose one design with its reasons and ask only about a trade-off they haven't decided.
 - A user revert or rewrite of your edit is their decision. Never re-apply it, and ask when it conflicts with the task.
 - On a rejection or correction, find the instruction that led to it, propose rewriting it and apply it once the user agrees, and fix the output too. Never only delete the line.
-- Read a broad word ("doc", "all", "test") at full scope. Apply "shorten" only to the named item and keep its facts.
 - A solution rejected as too long changes shape (tool-native feature, helper), it is never only trimmed.
-- Before changing shared code, find its callers and fix the shared code. A caller that breaks a sibling convention gets fixed itself.
-- After a change, run the project's tests, build, lint or typecheck when the change can affect them. Report the result in one line, or say none is defined.
+- Before changing shared code, find its callers and fix the shared code.
+- When the shared code would need a branch for one caller that breaks a sibling convention, fix that caller instead.
 - Fix a bug test-first and watch the test fail for the reported reason. After 3 failed attempts, stop and report what each showed.
 - Fix the code when a check fails. Never skip, delete, loosen or silence (`//nolint`, `@ts-ignore`, `any`) to turn it green, except a confirmed false positive a language rule allows or the user agreed to.
+- Take a successful action as done. Run no check only to confirm it (re-read, `ls`, `test -f`, re-run) unless it failed or its outcome was unclear.
 - After an interrupt, crash or on-disk change notice, re-read the file and `git status`, and say what was running.
-- Report outcomes as they happened, failures and skipped steps included, and your own earlier breakage. Say "not verified" when you didn't check.
 - When blocked or uncertain, say so and ask. Never invent an API, flag or path.
+- Report outcomes as they happened, failures and skipped steps included, and your own earlier breakage. Say "not verified" when you didn't check.
 
 ### Verification
 
@@ -58,37 +63,64 @@ trigger: always_on
 - Fetch an artifact the user points at (link, log, error, diff) before forming a hypothesis, and never contradict it with a guess.
 - Read `--help` or the man page for a CLI, the official docs for the installed version of a library. Run a cheap check instead of writing "not verified".
 - Search a third-party project's issues and merge requests before proposing a change to it.
-- Look for a simpler solution first, and challenge the approach, never the stated goal. When the goal looks wrong, ask why.
-- Challenge an approach that needs a new dependency or a workaround. Present a workaround as an option the user accepts before you implement it.
-
-### Feedback loop
-
-- After a plan, an implementation, or a new or substantially rewritten doc (not a few-line edit), end the turn with one question proposing a review loop, recommending one loop (two for a plan). Offer or start no other review.
-- Ask once per item, in the same turn as any other open question. A refusal covers that item only, and a count the user states stands.
-- Run nothing before agreement. On a plan, run the loop before the approval question.
-- Give a subagent with no context the full artifact and the user's constraints. Tell it to edit nothing and never to propose a loop.
-- Tell it to use a read-only `code-review` skill when the runtime has one, otherwise the governing instruction files.
-- Without subagents, review inline and say so.
-- The agreement covers the review and the edits applying findings needs.
-- Check each finding against the files, apply or reject it, and report each rejection in one line.
-- Ask about a finding that adds a file or dependency, or renames or removes something public.
-- Ask about or reject a finding beyond the request.
-- Start the next loop with the previous findings and rejections. Stop early when no finding holds.
 
 ### File editing
 
-- Before hand-editing a generated file (`DO NOT EDIT`, `@generated`, `Code generated by <tool>`), look for a generator that rebuilds it.
+- Never hand-edit a generated file (`DO NOT EDIT`, `@generated`, `Code generated by <tool>`). Change its source or generator and rebuild it.
+- Edit a file marked `Code generated by AI` like hand-written code.
 - Before creating a file, read its closest sibling and match its naming, mode, shebang, safety flags and registrations.
 - Reading a sibling also loads its glob-scoped rules in runtimes that load them on read. With no sibling, re-check against the rule files whose globs match.
-- Never re-read a file or run a check only to confirm a write worked, unless the outcome was unclear.
-- After your last edit and before the tests, read each changed file once against the global, repository and language rules, and fix each mismatch before reporting. Skip it when nothing changed or the change is a few lines.
+
+### Finishing
+
+1. After your last edit, read each changed file once against the global, repository and language rules, and fix each mismatch. Skip it when nothing changed or the change is a few lines.
+2. Run the project's tests, build, lint or typecheck when the change can affect them.
+3. Report the result in one line, or say none is defined.
+4. When the Feedback loop applies, end with its review proposal.
+
+### Feedback loop
+
+- End a turn that delivers a plan, an implementation, or a new or rewritten doc with one question proposing a review, answered by "Review", "Challenge" or a count. Skip it for a few-line edit.
+- Recommend one loop, two for a plan. Propose no other review.
+- Propose it once per item, in the same turn as any other open question. A refusal covers that item only.
+- Review only on the user's go: "Review", "Challenge" or a count. A stated count stands.
+- Propose a plan's review inside the plan as an open question, never as a step.
+- A plan approval is the go to build. Start the edits without reviewing the plan.
+
+To review:
+
+- Give a subagent with no context the full artifact and the user's constraints. Tell it to edit nothing and never to propose a review.
+- Tell it to use a read-only `code-review` skill when the runtime has one, otherwise the governing instruction files.
+- Without subagents, review inline and say so.
+
+After each review:
+
+- The go also allows the edits that apply the findings.
+- Verify each finding against the files. Apply the valid ones and report each rejected one with a one-line reason.
+- Ask before applying a finding that adds a file or dependency, renames or removes something public, or goes beyond the request.
+- Give the next reviewer the previous findings and rejections so it skips them. Stop before the count when a review finds nothing valid.
+
+### Plans
+
+- Stay read-only when asked for a plan or for no edits, and in plan mode, until the user approves.
+- Without stated constraints, diagnose and list the fix options.
+- Once the user has stated constraints, propose one design with its reasons and ask only about a trade-off they haven't decided.
+- Open with the functional change in plain words and one example, then the code.
+- Resolve every open fact with read-only checks while planning, and never defer one to implementation ("confirm later", "verify during implementation", "check when applying").
+- List every affected consumer and every behavior a simplification loses, each with an example.
+- Write real code when short, otherwise name the file and function.
+- For an instruction update (rule file, AGENTS.md, skill), write the real sentences or sections to add, change or delete, never a description of them.
+- Overwrite the harness's plan file when starting a new plan, never append.
 
 ## Design
 
+- Look for a simpler solution first, and challenge the approach, never the stated goal. When the goal looks wrong, ask why.
+- Challenge an approach that needs a new dependency or a workaround. Present a workaround as an option the user accepts before you implement it.
 - Decide where code belongs before writing it, group by what changes together, and keep the existing file split. Propose a move only when no in-place option works.
 - Build for the stated requirement and next steps named in the request or ticket, never an unstated future need.
 - Keep every existing capability and earlier requirement unless asked. Never keep a compat shim for removed code.
-- Extract a function only at 2 call sites, add an interface only at 2 implementations, and never split code for style alone.
+- Extract a function only once 2 call sites need it, add an interface only once 2 implementations exist, and never split code for style alone.
+- Prefer duplication over shared code that branches on who calls it.
 - Handle only errors a signature can return, and never check a structurally impossible input or state.
 - Prefer one bulk network request over one per item, and count requests before choosing.
 
@@ -104,7 +136,8 @@ trigger: always_on
 - Fetch with the harness's web fetch tool. Fall back to `curl`, then `wget`.
 - Find a code symbol with the language server or the codebase MCP, never a text search. When none exists, text-search and say so.
 - Run `node` and `python` only for the project's own test, build or lint command.
-- Prefer a tool's own feature (`find -execdir`) over loops and pipes around it. Wrap a command that can hang in `timeout`.
+- Prefer a tool's built-in feature (`find -execdir`, `git -C`, a library option) over a loop, pipe or script around it.
+- Bound anything that can hang (command, network call, wait) with a timeout.
 
 ## Code style
 
@@ -131,19 +164,11 @@ Applies to replies, docs, comments, commit and MR text. Write plain English for 
 - When asked for one part of a draft, give only that part.
 - Answer "does it work" for real use. If it's unusable in practice, the answer is no.
 - Report only the result, a decision the user must make, and a blocker, also while executing.
-- Skip request restatements, lists of what you read, recaps, justification paragraphs, summary tables and follow-up suggestions, except the check result, search method and loop proposal.
-- In an edit turn, name the changed file and line, then stop, except for the loop proposal and rejected findings.
-- A skill's report format is a maximum, so drop its empty items and those the user wouldn't act on.
+- Skip request restatements, lists of what you read, recaps, justification paragraphs, summary tables and follow-up suggestions, except the check result, search method and review proposal.
+- In an edit turn, name the changed file and line, then stop, except for the check result, the review proposal and rejected findings.
+- A skill's report format is a maximum, so drop its empty items.
+- Outside a requested report, review or plan, also drop the items the user wouldn't act on.
 - Explain only a non-obvious why. A requested report, review or plan comes in full.
-
-### Plans
-
-- Open with the functional change in plain words and one example, then the code.
-- Resolve every open fact with read-only checks while planning, and never defer one to implementation ("confirm later", "verify during implementation", "check when applying").
-- List every affected consumer and every behavior a simplification loses, each with an example.
-- Write real code when short, otherwise name the file and function.
-- For an instruction update (rule file, AGENTS.md, skill), write the real sentences or sections to add, change or delete, never a description of them.
-- Overwrite the harness's plan file when starting a new plan, never append.
 
 ### Comments
 
@@ -152,15 +177,9 @@ Applies to replies, docs, comments, commit and MR text. Write plain English for 
 - End an own-line comment with a period (not a structural marker like `// Arrange`), a trailing comment without one.
 - Apply the one-sentence cap to description fields too (Terraform `variable`, `output`).
 - Never mention the replaced implementation or history.
+- Write a doc comment a language rule file requires (GoDoc, JSDoc, shell function header), even when its fact is obvious.
 - GoDoc, JSDoc and per-case enumerations are exempt from the cap. Keep one bullet per case and trim only the intro.
 - A file created from scratch gets `Code generated by AI (<agent runtime>)` in its own comment syntax, unless trivial (config stub, one- or two-line script) or JSON. Name the runtime, never the model.
-
-### Commits and merge requests
-
-- Follow Conventional Commits: lowercase imperative subject, no period, no body, scope only when it narrows meaning. Trailers are fine.
-- Mark a commit breaking only when the user says so, and ask when it removes or renames public API.
-- Add the `Co-Authored-By` trailer for the acting agent on commits you made only.
-- Write an MR description as a short use case: the problem, then why the change fixes it, with the design rationale. No logs, function internals or test lists.
 
 ## Git
 
@@ -169,6 +188,13 @@ Applies to replies, docs, comments, commit and MR text. Write plain English for 
 - Commit on the current branch. Never create, switch or delete a branch unless asked, even when a harness default says to branch first.
 - Run hooks with `pre-commit run --files <files>`, never by staging to run them.
 - Sign with `-S` (or configured `commit.gpgsign`) and add `--signoff` with the configured **git** `user.name` and `user.email`.
+
+### Commits and merge requests
+
+- Follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/): lowercase imperative subject, no period, no body, scope only when it narrows meaning. Trailers are fine.
+- Mark a commit breaking only when the user says so, and ask when it removes or renames public API.
+- Add the `Co-Authored-By` trailer for the acting agent on commits you made only.
+- Write an MR description as a short use case: the problem, then why the change fixes it, with the design rationale. No logs, function internals or test lists.
 
 ## Environment
 

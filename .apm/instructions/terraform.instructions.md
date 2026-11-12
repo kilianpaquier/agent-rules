@@ -26,7 +26,7 @@ These rules override it on any conflict.
 
 ## Block ordering
 
-- Put `source` next in module blocks, right after `for_each` or `count`.
+- Put `count` or `for_each` first in every block, then `source` in a module block.
 - Keep the remaining args alphabetical.
 
 ## Provider blocks

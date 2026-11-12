@@ -15,14 +15,12 @@ These rules override them on any conflict.
 
 ## To Be Continuous
 
-Use [To Be Continuous](https://gitlab.com/to-be-continuous) components when a tool or workflow is needed.
-Read a component's `inputs` in its template, at `https://gitlab.com/to-be-continuous/{component}/-/raw/main/templates/gitlab-ci-{component}.yml`.
+When a job needs a tool or workflow, use a [To Be Continuous](https://gitlab.com/to-be-continuous) component:
 
-Include it as `$CI_SERVER_FQDN/to-be-continuous/{component}/gitlab-ci-{component}@<tag>`.
-
-For `semantic-release`, use `semrel` as `{component}` in both the URL and the include.
-
-Components: `ansible`, `aws`, `azure`, `bash`, `docker`, `gcloud`, `golang`, `gradle`, `helm`, `maven`, `node`, `pre-commit`, `python`, `renovate`, `rust`, `semantic-release`, `sonar`, `terraform`.
+1. Pick the `{component}` among `ansible`, `aws`, `azure`, `bash`, `docker`, `gcloud`, `golang`, `gradle`, `helm`, `maven`, `node`, `pre-commit`, `python`, `renovate`, `rust`, `semantic-release`, `sonar`, `terraform`.
+2. Take its `{template}`, the component name except `semrel` for `semantic-release`.
+3. Read its `inputs` in `https://gitlab.com/to-be-continuous/{component}/-/raw/main/templates/gitlab-ci-{template}.yml`.
+4. Include it as `$CI_SERVER_FQDN/to-be-continuous/{component}/gitlab-ci-{template}@<tag>`.
 
 ## Includes
 

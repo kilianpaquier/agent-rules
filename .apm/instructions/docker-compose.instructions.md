@@ -50,8 +50,8 @@ environment:
 
 ## depends_on
 
-- Define a `healthcheck:` block when a service lacks a native `HEALTHCHECK` but a dependent needs `condition: service_healthy`.
-- Use `condition: service_healthy` when the service has a health check (native or compose-level), otherwise `condition: service_started`.
+- For a long-running service, use `condition: service_healthy` when the dependent needs it ready for connections (database, broker), otherwise `condition: service_started`.
+- Give that service a `healthcheck:` block when its image has no native `HEALTHCHECK`.
 - Use `condition: service_completed_successfully` for a one-shot container (migration, seed, init) that must exit successfully before its dependent starts:
 
 ```yaml
