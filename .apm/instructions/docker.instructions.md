@@ -9,9 +9,12 @@ trigger: glob
 
 # Dockerfile
 
-Follow the **Docker** [building best practices](https://docs.docker.com/build/building/best-practices/)
-and the `docker-build-strategies` skill alongside these rules.
-These rules override them on any conflict.
+Follow these sources in order. A source that is missing, or too vague to settle the case, is completed by the next one for that point only:
+
+1. The `docker-skills:docker-build-strategies` skill, invoked, never consulted online
+2. **Docker** [building best practices](https://docs.docker.com/build/building/best-practices/)
+
+The rules in this file override all of them on any conflict.
 
 ## Stages
 

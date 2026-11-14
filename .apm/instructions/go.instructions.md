@@ -9,10 +9,15 @@ trigger: glob
 
 # Go
 
-Follow [**Effective Go**](https://go.dev/doc/effective_go), the [**Uber** Go Style Guide](https://github.com/uber-go/guide/blob/master/style.md),
-the [**Go** Code Review Comments](https://go.dev/wiki/CodeReviewComments)
-and the `go` skill alongside these rules.
-These rules override them on any conflict.
+Follow these sources in order. A source that is missing, or too vague to settle the case, is completed by the next one for that point only:
+
+1. The `go:go` skill (spf13), invoked, never consulted online
+2. [**Effective Go**](https://go.dev/doc/effective_go)
+3. [**Google** Go Style Guide](https://google.github.io/styleguide/go/guide)
+4. [**Go** Code Review Comments](https://go.dev/wiki/CodeReviewComments)
+5. [**Uber** Go Style Guide](https://github.com/uber-go/guide/blob/master/style.md)
+
+The rules in this file override all of them on any conflict.
 
 ## Comments
 

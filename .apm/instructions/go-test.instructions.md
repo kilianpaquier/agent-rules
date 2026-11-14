@@ -9,9 +9,13 @@ trigger: glob
 
 # Go tests
 
-Follow the [**Uber** Go Style Guide](https://github.com/uber-go/guide/blob/master/style.md)
-and the `go` skill alongside these rules.
-These rules override them on any conflict, table-driven tests included.
+Follow these sources in order. A source that is missing, or too vague to settle the case, is completed by the next one for that point only:
+
+1. The `go:go` skill (spf13), invoked, never consulted online
+2. [**Google** Go Style Guide](https://google.github.io/styleguide/go/guide)
+3. [**Uber** Go Style Guide](https://github.com/uber-go/guide/blob/master/style.md)
+
+The rules in this file override all of them on any conflict, table-driven tests included.
 
 ## Package naming
 

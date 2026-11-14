@@ -9,9 +9,12 @@ trigger: glob
 
 # Docker Compose
 
-Follow the [**Compose** specification](https://github.com/compose-spec/compose-spec/blob/main/spec.md)
-and the `docker-compose-patterns` skill alongside these rules.
-These rules override them on any conflict, the `compose.yaml` filename included.
+Follow these sources in order. A source that is missing, or too vague to settle the case, is completed by the next one for that point only:
+
+1. The `docker-skills:docker-compose-patterns` skill, invoked, never consulted online
+2. [**Compose** specification](https://github.com/compose-spec/compose-spec/blob/main/spec.md)
+
+The rules in this file override all of them on any conflict, the `compose.yaml` filename included.
 
 ## File
 
