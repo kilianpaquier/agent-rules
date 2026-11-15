@@ -14,7 +14,7 @@ Follow these sources in order. A source that is missing, or too vague to settle 
 1. The `docker-skills:docker-compose-patterns` skill, invoked, never consulted online
 2. [**Compose** specification](https://github.com/compose-spec/compose-spec/blob/main/spec.md)
 
-The rules in this file override all of them on any conflict, the `compose.yaml` filename included.
+The rules in this file override all of them on any conflict.
 
 ## File
 

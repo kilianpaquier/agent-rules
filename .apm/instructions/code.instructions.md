@@ -15,8 +15,7 @@ Language-neutral rules. A language instruction file overrides these where they c
 
 - Validate input crossing a trust boundary (user input, network payload, file content). Internal invariants need no check.
 - Use parameterized queries only. Never build SQL, shell commands, or paths by concatenating untrusted input. Use parameters, argument arrays, or a path join checked to stay inside its base directory.
-- Never ship a regex that runs on untrusted input and uses backtracking constructs (nested quantifiers, backreferences) unless the user reviewed and approved that regex.
-- An anchored literal pattern needs no approval.
+- Never ship a regex with backtracking constructs on untrusted input unless the user approved it.
 
 ## Testing
 

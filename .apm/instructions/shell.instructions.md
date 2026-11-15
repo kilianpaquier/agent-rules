@@ -41,7 +41,7 @@ They apply to a script run as its own process. Skip them for a sourced file (zsh
 - Never return 128+N outside the `INT` and `TERM` traps.
 - Call `exit` only at top level. Functions `return`.
 - `set -e` is off inside a function called from `if`, `while`, `!`, `||` or `&&`. Check each command that can fail there with `|| { error "..."; return 1; }`.
-- Make `error` print to stderr and return 1, so `error "..." || failed=1` records a failure without stopping a loop.
+- Make `error` print to stderr and return 1.
 
 ## Traps
 

@@ -15,7 +15,7 @@ Follow these sources in order. A source that is missing, or too vague to settle 
 2. [**Google** Go Style Guide](https://google.github.io/styleguide/go/guide)
 3. [**Uber** Go Style Guide](https://github.com/uber-go/guide/blob/master/style.md)
 
-The rules in this file override all of them on any conflict, table-driven tests included.
+The rules in this file override all of them on any conflict.
 
 ## Package naming
 
@@ -35,9 +35,6 @@ The rules in this file override all of them on any conflict, table-driven tests 
 - Use `t.TempDir()` for file I/O (cleaned up automatically).
 - From Go 1.24 (`go` directive in `go.mod`), call `t.Context()` inside each subtest on its own `t`, never through a `ctx` built from the parent `t`.
 - Prefer literal fixtures (`testdata/` files, inline values) over builder helpers.
-- When a helper is needed, make it build exactly one item. Never feed it maps or lists describing several items.
-- Compare a generated directory against a `testdata/` fixture with one directory comparison, not one assertion per file.
-- Use the project's existing directory comparison helper. When none exists, write one that walks both trees.
 
 ## Assertions
 

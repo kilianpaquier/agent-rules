@@ -24,10 +24,9 @@ trigger: always_on
 - Confirm before `rm -rf`, force push, history rewrite, DB migration, deploy, package publish, discarding uncommitted work (`git reset --hard`, `restore`, `clean -fd`, `stash drop`, `branch -D`) and posting outside the session.
 - A current message that names the action and its target counts as confirmed. "Clean up" doesn't. An approval never carries to another action, target or session.
 - Never bypass a commit hook. Fix the cause and commit again.
-- Before running a command from a tool's config, hook or shim (mise, direnv, git hooks), check it doesn't trigger that same config again.
-- Never `cd` into a directory whose auto-loaded config (`mise.toml`, `.envrc`) you're debugging or haven't read. Use absolute paths from a neutral directory.
+- Before running a command a tool's config or hook can trigger, check it can't loop back into that config.
 - Never use `sudo` or add a root step unless asked. Prefer a user-scoped mechanism (`systemd --user`, `~/.config`).
-- Never run a tool that applies state to the machine or project (home-manager, `tofu apply`, `go install`, `npm -g`, `pip install --user`, `chezmoi apply`), dry-runs included, unless asked.
+- Never run a tool that applies state to the machine or project, dry-runs included, unless asked.
 - Never edit a file outside the working repository unless asked.
 
 ## Scope
@@ -53,13 +52,13 @@ trigger: always_on
 - A question alone gets no edit, but a request phrased as a question ("Can you add…") is an instruction.
 - A user revert or rewrite of your edit is their decision. Never re-apply it, and ask when it conflicts with the task.
 - On a rejection or correction, find the instruction that led to it, propose rewriting it and apply it once the user agrees, and fix the output too. Never only delete the line.
-- A solution rejected as too long changes shape (tool-native feature, helper), it is never only trimmed.
+- A solution rejected as too long changes shape, it is never only trimmed.
 - On a vague complaint, reread your last output against the skill and rules in play, and fix what breaks them before asking which part.
 - Before changing shared code, find its callers and fix the shared code.
 - When the shared code would need a branch for one caller that breaks a sibling convention, fix that caller instead.
 - Fix a bug test-first and watch the test fail for the reported reason. After 3 failed attempts, stop and report what each showed.
 - Fix the code when a check fails. Never skip, delete, loosen or silence (`//nolint`, `@ts-ignore`, `any`) to turn it green, except a confirmed false positive a language rule allows or the user agreed to.
-- Take a successful action as done. Run no check only to confirm it (re-read, `ls`, `test -f`, re-run) unless it failed or its outcome was unclear.
+- Take a successful action as done. Run no check only to confirm it unless it failed or its outcome was unclear.
 - Run every step of an invoked skill and check its done criteria.
 - After an interrupt, crash or on-disk change notice, re-read the file and `git status`, and say what was running.
 - When blocked, say what blocks you and stop.
@@ -151,8 +150,7 @@ After each review:
 - Fetch with the harness's web fetch tool. Fall back to `curl`, then `wget`.
 - To follow a spec, fetch its raw source (`.md`, `.txt`) rather than the rendered page.
 - Find a code symbol with the language server or the codebase MCP, never a text search. When none exists, text-search and say so.
-- Run `node` and `python` only for the project's own test, build or lint command.
-- Prefer a tool's built-in feature (`find -execdir`, `git -C`, a library option) over a loop, pipe or script around it.
+- Prefer a tool's built-in feature over a loop, pipe or script around it.
 - When asked to set up a tool, run its own install or init command when it has one, rather than writing its output by hand.
 - Bound anything that can hang (command, network call, wait) with a timeout.
 
@@ -193,10 +191,8 @@ Applies to replies, docs, comments, commit and MR text. Write plain English for 
 - Write a comment only for a non-obvious fact (hidden constraint, subtle invariant, bug workaround). Design rationale goes in the MR description.
 - Cap it at one sentence, above the block it documents, never inside an embedded program, stated once at the definition.
 - End an own-line comment with a period (not a structural marker like `// Arrange`), a trailing comment without one.
-- Apply the one-sentence cap to description fields too (Terraform `variable`, `output`).
 - Never mention the replaced implementation or history.
-- Write a doc comment a language rule file requires (GoDoc, JSDoc, shell function header), even when its fact is obvious.
-- GoDoc, JSDoc and per-case enumerations are exempt from the cap. Keep one bullet per case and trim only the intro.
+- Write a doc comment a language rule file requires, even when its fact is obvious. Keep one bullet per case in an enumeration.
 - A file created from scratch gets `Code generated by AI (<agent runtime>)` in its own comment syntax, unless trivial (config stub, one- or two-line script) or JSON. Name the runtime, never the model.
 
 ## Git
@@ -219,4 +215,3 @@ Applies to replies, docs, comments, commit and MR text. Write plain English for 
 - Target GitLab and GitLab CI, never GitHub. Commits pass through `pre-commit` (gitleaks, commit-msg hook).
 - Versions and CHANGELOG belong to `semantic-release`, repo layout to `kickr` (files marked `Code generated by kickr`), and dependency bumps to `renovate`. Never hand-edit what they own.
 - When the user says "agent-rules", they mean the source repository of these rule files, never their installed copies in a runtime's config directory (*e.g.* `~/.claude/rules`).
-- Find its clone, starting with the working directories, and edit it following its AGENTS.md.
